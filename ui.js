@@ -1,198 +1,180 @@
-const vehicleColors = [
-    // MÉTALLIQUES CLASSIQUES
-    
-    // Noirs et gris
-    { name: "Noir", color: "#0E0E0E", id: 0 },
-    { name: "Graphite", color: "#1C1D21", id: 1 },
-    { name: "Noir acier", color: "#32383D", id: 2 },
-    { name: "Gris foncé", color: "#454B4F", id: 3 },
-    { name: "Gris", color: "#666970", id: 4 },
-    { name: "Gris clair", color: "#969995", id: 5 },
-    { name: "Argent", color: "#C5C5C5", id: 6 },
-    { name: "Gris argenté", color: "#979A97", id: 7 },
-    { name: "Gris acier", color: "#63625C", id: 9 },
-    { name: "Gris météorite", color: "#3A3C3F", id: 10 },
-    { name: "Noir gravier", color: "#27292B", id: 11 },
-    { name: "Gris anthracite", color: "#373C43", id: 15 },
-    { name: "Noir absolu", color: "#0E0F11", id: 16 },
-    { name: "Noir carbone", color: "#121315", id: 17 },
-    { name: "Noir satiné", color: "#0D131B", id: 19 },
-    { name: "Noir ultime", color: "#050506", id: 20 },
-    { name: "Noir profond", color: "#15181C", id: 21 },
-    { name: "Noir mat", color: "#0F0F0F", id: 22 },
-    
-    // Blancs
-    { name: "Blanc nacré", color: "#F1F1F1", id: 106 },
-    { name: "Blanc", color: "#FFFFFF", id: 111 },
-    { name: "Blanc glacier", color: "#F5F5F5", id: 112 },
-    { name: "Blanc givré", color: "#EAEAEA", id: 114 },
-    { name: "Blanc osmium", color: "#DDD5D0", id: 116 },
-    { name: "Blanc polaire", color: "#F7F7F7", id: 118 },
-    { name: "Crème", color: "#FFF5D0", id: 113 },
-    { name: "Blanc cassé", color: "#EAE6DE", id: 121 },
-    { name: "Ivoire", color: "#F0E5D0", id: 122 },
-    
-    // Rouges
-    { name: "Rouge", color: "#B0090F", id: 27 },
-    { name: "Rouge vif", color: "#D10A17", id: 28 },
-    { name: "Rouge grenat", color: "#93002B", id: 29 },
-    { name: "Rouge flamme", color: "#DE0F18", id: 30 },
-    { name: "Rouge gracieux", color: "#8A292C", id: 31 },
-    { name: "Rouge vin", color: "#5E1E25", id: 32 },
-    { name: "Rouge cabernet", color: "#620C1C", id: 33 },
-    { name: "Rouge bonbon", color: "#D10056", id: 34 },
-    { name: "Rouge pomme", color: "#B8091A", id: 35 },
-    { name: "Rouge écarlate", color: "#E6133C", id: 141 },
-    { name: "Rouge rubis", color: "#8C1D24", id: 142 },
-    { name: "Rouge vermillon", color: "#942126", id: 144 },
-    { name: "Rouge corail", color: "#C72133", id: 150 },
-    { name: "Rouge opéra", color: "#6E0E21", id: 155 },
-    
-    // Roses
-    { name: "Rose", color: "#F2C4E4", id: 135 },
-    { name: "Rose fuschia", color: "#B01259", id: 137 },
-    { name: "Rose saumon", color: "#F69697", id: 136 },
-    { name: "Rose pfister", color: "#BE2F8A", id: 138 },
-    
-    // Oranges
-    { name: "Orange", color: "#F78616", id: 38 },
-    { name: "Orange vif", color: "#E56310", id: 41 },
-    { name: "Orange soleil", color: "#F0835C", id: 44 },
-    { name: "Orange citrus", color: "#FFC35C", id: 43 },
-    { name: "Orange crème", color: "#FDAA75", id: 130 },
-    { name: "Orange métallisé", color: "#D16018", id: 131 },
-    { name: "Orange automne", color: "#BE5B33", id: 153 },
-    
-    // Jaunes
-    { name: "Jaune", color: "#FFC91F", id: 42 },
-    { name: "Jaune course", color: "#DED835", id: 89 },
-    { name: "Jaune canari", color: "#FFEB2F", id: 88 },
-    { name: "Jaune citron", color: "#B5AF3A", id: 91 },
-    
-    // Bruns/Dorés/Cuivrés
-    { name: "Or", color: "#A77B48", id: 37 },
-    { name: "Bronze", color: "#594E33", id: 90 },
-    { name: "Cuivre orangé", color: "#A25A16", id: 36 },
-    { name: "Cuivre", color: "#8E633A", id: 154 },
-    { name: "Brun", color: "#3D311E", id: 96 },
-    { name: "Brun moyen", color: "#5A3921", id: 97 },
-    { name: "Brun clair", color: "#6D4C32", id: 98 },
-    { name: "Brun chocolat", color: "#372119", id: 101 },
-    { name: "Brun terre", color: "#4E352B", id: 102 },
-    { name: "Brun feuille", color: "#51463D", id: 103 },
-    { name: "Brun marais", color: "#3C322A", id: 127 },
-    { name: "Ocre", color: "#BD9462", id: 99 },
-    { name: "Kaki", color: "#7D6256", id: 100 },
-    { name: "Beige", color: "#D9C6B0", id: 95 },
-    
-    // Verts
-    { name: "Vert foncé", color: "#132428", id: 52 },
-    { name: "Vert forêt", color: "#1F2E2C", id: 53 },
-    { name: "Vert olive", color: "#4E6443", id: 54 },
-    { name: "Vert vif", color: "#66B81F", id: 55 },
-    { name: "Vert gazon", color: "#129500", id: 56 },
-    { name: "Vert lime", color: "#7EC000", id: 92 },
-    { name: "Vert menthe", color: "#A3E064", id: 94 },
-    { name: "Vert sapin", color: "#1D261C", id: 49 },
-    { name: "Vert Mossport", color: "#1E302D", id: 50 },
-    { name: "Vert chasseur", color: "#2F353A", id: 51 },
-    { name: "Vert émeraude", color: "#23442F", id: 52 },
-    { name: "Vert pomme", color: "#91CA34", id: 57 },
-    { name: "Vert bouteille", color: "#122731", id: 58 },
-    { name: "Vert mousse", color: "#5F7168", id: 59 },
-    { name: "Vert citron", color: "#A9C758", id: 93 },
-    { name: "Vert prairie", color: "#356640", id: 151 },
-    { name: "Vert pin", color: "#1E442A", id: 156 },
-    
-    // Bleus
-    { name: "Bleu nuit", color: "#0B1421", id: 64 },
-    { name: "Bleu galaxie", color: "#111E25", id: 65 },
-    { name: "Bleu foncé", color: "#1E2130", id: 66 },
-    { name: "Bleu marine", color: "#1D2144", id: 67 },
-    { name: "Bleu diamant", color: "#2F3554", id: 68 },
-    { name: "Bleu surf", color: "#3B4E78", id: 69 },
-    { name: "Bleu nautique", color: "#0A1D2B", id: 70 },
-    { name: "Bleu minuit", color: "#2C3242", id: 71 },
-    { name: "Bleu sombre", color: "#212A3F", id: 72 },
-    { name: "Bleu vif", color: "#1157BD", id: 73 },
-    { name: "Bleu ciel", color: "#57A2CE", id: 74 },
-    { name: "Bleu paradis", color: "#7AAFDE", id: 75 },
-    { name: "Bleu roi", color: "#0E316D", id: 80 },
-    { name: "Bleu éclatant", color: "#001E81", id: 81 },
-    { name: "Bleu saphir", color: "#0F1E73", id: 82 },
-    { name: "Bleu azur", color: "#253C83", id: 83 },
-    { name: "Bleu crème", color: "#B8E3F7", id: 84 },
-    { name: "Acier bleuté", color: "#304C5F", id: 85 },
-    { name: "Bleu-vert", color: "#506272", id: 104 },
-    { name: "Bleu quartz", color: "#455B66", id: 105 },
-    { name: "Bleu horizon", color: "#5E748F", id: 107 },
-    { name: "Turquoise", color: "#1B9E77", id: 128 },
-    { name: "Bleu épinette", color: "#112539", id: 140 },
-    { name: "Bleu epsilon", color: "#3761AC", id: 146 },
-    { name: "Bleu Schafter", color: "#0D2042", id: 147 },
-    { name: "Bleu acier", color: "#0D3045", id: 152 },
-    { name: "Bleu cobalt", color: "#192C4A", id: 157 },
-    
-    // Violets
-    { name: "Violet", color: "#361E77", id: 145 },
-    { name: "Violet graphite", color: "#1E1D22", id: 76 },
-    { name: "Violet nuit", color: "#1E1D2C", id: 77 },
-    { name: "Violet laevendel", color: "#473342", id: 78 },
-    { name: "Violet foncé", color: "#261B2B", id: 79 },
-    { name: "Violet pâle", color: "#5E4773", id: 143 },
-    { name: "Violet améthyste", color: "#612F79", id: 148 },
-    { name: "Violet sombre", color: "#242131", id: 146 },
-    { name: "Schafter violet", color: "#2F2F48", id: 81 },
-    { name: "Violet bourgogne", color: "#3F3655", id: 149 },
-    
-    // FINITIONS SPÉCIALES
-    
-    // Métalliques spéciaux
-    { name: "Chrome", color: "#DBDBDB", id: 120 },
-    
-    // Métalliques aluminium
-    { name: "Aluminium", color: "#73848C", id: 12 },
-    { name: "Chrome brossé", color: "#96928E", id: 13 },
-    { name: "Gris acier foncé", color: "#515459", id: 14 },
-    
-    // Métalliques bleutés
-    { name: "Rouille rouge", color: "#637380", id: 8 },
-    { name: "Gris satiné", color: "#8598A5", id: 18 },
-    { name: "Noir quartz", color: "#15181C", id: 21 }
-  ];
-  
-  // Couleurs mats (Type 3)
-  const matteColors = [
-    { name: "Noir mat", color: "#0F0F0F", id: 12 },
-    { name: "Gris mat", color: "#333333", id: 13 },
-    { name: "Gris clair mat", color: "#737373", id: 14 },
-    { name: "Blanc mat", color: "#F0F0F0", id: 131 },
-    { name: "Bleu mat", color: "#1F2735", id: 83 },
-    { name: "Rouge mat", color: "#7C0E06", id: 49 },
-    { name: "Orange mat", color: "#CF3410", id: 47 },
-    { name: "Jaune mat", color: "#E0C06F", id: 42 },
-    { name: "Vert mat", color: "#105921", id: 55 },
-    { name: "Violet mat", color: "#271C2C", id: 148 }
-  ];
-  
-  // Couleurs métal brossé (Type 4)
-  const metalColors = [
-    { name: "Noir métallisé", color: "#0D1116", id: 117 },
-    { name: "Aluminium brossé", color: "#8D9293", id: 118 },
-    { name: "Acier brossé", color: "#516272", id: 119 },
-    { name: "Or brossé", color: "#B8860B", id: 158 },
-    { name: "Cuivre brossé", color: "#A65F43", id: 159 }
-  ];
-  
-  // Types de peinture disponibles dans GTA V
-  const paintTypes = [
-    { id: 0, name: "Normal", description: "Finition standard sans effet spécial", price: 500 },
-    { id: 1, name: "Métallique", description: "Finition brillante avec reflets", price: 700 },
-    { id: 2, name: "Nacré", description: "Métallisé avec effet de chatoiement", price: 1000 },
-    { id: 3, name: "Mat", description: "Sans reflets, aspect satiné", price: 900 },
-    { id: 4, name: "Métal brossé", description: "Aspect métal avec traits directionnels", price: 1200 },
-    { id: 5, name: "Chrome", description: "Effet miroir hautement réfléchissant", price: 1500 }
-  ];
+const vehicleColors = {
+    // Couleurs standards/classiques (type 0)
+    standard: [
+        { id: 0, name: "Noir", color: "#0d1116" },
+        { id: 1, name: "Graphite", color: "#1c1d21" },
+        { id: 2, name: "Noir Acier", color: "#32383d" },
+        { id: 3, name: "Gris Foncé", color: "#454b4f" },
+        { id: 4, name: "Gris Argenté", color: "#999da0" },
+        { id: 5, name: "Gris Acier", color: "#c2c4c6" },
+        { id: 6, name: "Argenté", color: "#979a97" },
+        { id: 7, name: "Bleu Argenté", color: "#637380" },
+        { id: 8, name: "Gris Roulé", color: "#63625c" },
+        { id: 9, name: "Argenté Ombré", color: "#3c3f47" },
+        { id: 10, name: "Pierre", color: "#444e54" },
+        { id: 11, name: "Noir Minuit", color: "#1f2226" },
+        { id: 12, name: "Gris Anthracite", color: "#13181f" },
+        { id: 13, name: "Noir Réplica", color: "#26282a" },
+        { id: 14, name: "Carbone", color: "#1e2429" },
+        { id: 15, name: "Bleu Graphite", color: "#31383f" },
+        { id: 16, name: "Rouge Foncé", color: "#7a0101" },
+        { id: 17, name: "Rouge Cabernet", color: "#620022" },
+        { id: 18, name: "Rouge Vin", color: "#320000" },
+        { id: 19, name: "Rose Pastel", color: "#ba676f" },
+        { id: 20, name: "Rouge Saumon", color: "#ed7176" },
+        { id: 21, name: "Rouge Vermillon", color: "#cf1f21" },
+        { id: 22, name: "Orange", color: "#f44d00" },
+        { id: 23, name: "Rouge Clair", color: "#B22222" },
+        { id: 24, name: "Jaune Crème", color: "#fde7a9" },
+        { id: 25, name: "Jaune Citron", color: "#ffc91f" },
+        { id: 26, name: "Jaune", color: "#fcf64a" },
+        { id: 27, name: "Lime", color: "#84c365" },
+        { id: 28, name: "Vert Feuille", color: "#4e6443" },
+        { id: 29, name: "Racing Green", color: "#132428" },
+        { id: 30, name: "Olive", color: "#6d6c3c" },
+        { id: 31, name: "Vert Forêt", color: "#222e46" },
+        { id: 32, name: "Vert Prairie", color: "#6f8c51" },
+        { id: 33, name: "Vert Racing", color: "#66b81f" },
+        { id: 34, name: "Vert Marin", color: "#22383e" },
+        { id: 35, name: "Sarcelle Foncé", color: "#1f5a3a" },
+        { id: 36, name: "Turquoise", color: "#509079" },
+        { id: 37, name: "Bleu Mer", color: "#1d5a76" },
+        { id: 38, name: "Bleu Marine", color: "#112552" },
+        { id: 39, name: "Bleu Horizon", color: "#1a1d24" },
+        { id: 40, name: "Ultra Bleu", color: "#253351" },
+        { id: 41, name: "Bleu Saxo", color: "#1c3551" },
+        { id: 42, name: "Bleu Galaxie", color: "#151921" },
+        { id: 43, name: "Bleu Diamant", color: "#193e6f" },
+        { id: 44, name: "Surf Bleu", color: "#5c889e" },
+        { id: 45, name: "Bleu Nautique", color: "#525661" },
+        { id: 46, name: "Bleu Délavé", color: "#8ea8b0" },
+        { id: 47, name: "Bleue Schafter", color: "#202c3b" },
+        { id: 48, name: "Mauve Spinnaker", color: "#635f60" },
+        { id: 49, name: "Violet Pourpre", color: "#260C3A" },
+        { id: 50, name: "Violet Minuit", color: "#2c0a57" },
+        { id: 51, name: "Violet Schafter", color: "#161629" },
+        { id: 52, name: "Violet Clair", color: "#483B63" },
+        { id: 53, name: "Blanc Crème", color: "#E5E5E5" },
+        { id: 54, name: "Crème Glacée", color: "#FBFCF4" },
+        { id: 55, name: "Blanc Neige", color: "#FFFFFF" },
+        { id: 56, name: "Blanc Frost", color: "#F2F2F2" },
+        { id: 57, name: "Beige Hêtre", color: "#c1ab6c" },
+        { id: 58, name: "Brun Van", color: "#5b391b" },
+        { id: 59, name: "Beige Platane", color: "#6b6b6b" },
+        { id: 60, name: "Brun Terre", color: "#3b2e2a" },
+        { id: 61, name: "Brun Désert", color: "#7b6c5a" },
+        { id: 62, name: "Brun Noisette", color: "#5a4d41" },
+        { id: 63, name: "Beige Pierre", color: "#d0c0b1" }
+    ],
+    // Couleurs métalliques (type 1)
+    metallic: [
+        { id: 64, name: "Métal Noir", color: "#0d1116" },
+        { id: 65, name: "Métal Graphite", color: "#1c1d21" },
+        { id: 66, name: "Métal Noir Acier", color: "#32383d" },
+        { id: 67, name: "Métal Gris Foncé", color: "#454b4f" },
+        { id: 68, name: "Métal Gris Argenté", color: "#999da0" },
+        { id: 69, name: "Métal Gris Acier", color: "#c2c4c6" },
+        { id: 70, name: "Métal Argenté", color: "#979a97" },
+        { id: 71, name: "Métal Bleu Argenté", color: "#637380" },
+        { id: 72, name: "Métal Gris Roulé", color: "#63625c" },
+        { id: 73, name: "Métal Argenté Ombré", color: "#3c3f47" },
+        { id: 74, name: "Métal Pierre", color: "#444e54" },
+        { id: 75, name: "Métal Noir Minuit", color: "#1f2226" },
+        { id: 76, name: "Métal Gris Anthracite", color: "#13181f" },
+        { id: 77, name: "Métal Noir Réplica", color: "#26282a" },
+        { id: 78, name: "Métal Carbone", color: "#1e2429" },
+        { id: 79, name: "Métal Bleu Graphite", color: "#31383f" },
+        { id: 80, name: "Métal Rouge Foncé", color: "#7a0101" },
+        { id: 81, name: "Métal Rouge Cabernet", color: "#620022" },
+        { id: 82, name: "Métal Rouge Vin", color: "#320000" },
+        { id: 83, name: "Métal Rose Pastel", color: "#ba676f" },
+        { id: 84, name: "Métal Rouge Saumon", color: "#ed7176" },
+        { id: 85, name: "Métal Rouge Vermillon", color: "#cf1f21" },
+        { id: 86, name: "Métal Orange", color: "#f44d00" },
+        { id: 87, name: "Métal Rouge Clair", color: "#B22222" },
+        { id: 88, name: "Métal Jaune Crème", color: "#fde7a9" },
+        { id: 89, name: "Métal Jaune Citron", color: "#ffc91f" },
+        { id: 90, name: "Métal Jaune", color: "#fcf64a" },
+        { id: 91, name: "Métal Lime", color: "#84c365" },
+        { id: 92, name: "Métal Vert Feuille", color: "#4e6443" },
+        { id: 93, name: "Métal Racing Green", color: "#132428" },
+        { id: 94, name: "Métal Olive", color: "#6d6c3c" },
+        { id: 95, name: "Métal Vert Forêt", color: "#222e46" },
+        { id: 96, name: "Métal Vert Prairie", color: "#6f8c51" },
+        { id: 97, name: "Métal Vert Racing", color: "#66b81f" },
+        { id: 98, name: "Métal Vert Marin", color: "#22383e" },
+        { id: 99, name: "Métal Sarcelle Foncé", color: "#1f5a3a" },
+        { id: 100, name: "Métal Turquoise", color: "#509079" },
+        { id: 101, name: "Métal Bleu Mer", color: "#1d5a76" },
+        { id: 102, name: "Métal Bleu Marine", color: "#112552" },
+        { id: 103, name: "Métal Bleu Horizon", color: "#1a1d24" },
+        { id: 104, name: "Métal Ultra Bleu", color: "#253351" },
+        { id: 105, name: "Métal Bleu Saxo", color: "#1c3551" },
+        { id: 106, name: "Métal Bleu Galaxie", color: "#151921" },
+        { id: 107, name: "Métal Bleu Diamant", color: "#193e6f" },
+        { id: 108, name: "Métal Surf Bleu", color: "#5c889e" },
+        { id: 109, name: "Métal Bleu Nautique", color: "#525661" },
+        { id: 110, name: "Métal Bleu Délavé", color: "#8ea8b0" },
+        { id: 111, name: "Métal Bleue Schafter", color: "#202c3b" },
+        { id: 112, name: "Métal Mauve Spinnaker", color: "#635f60" },
+        { id: 113, name: "Métal Violet Pourpre", color: "#260C3A" },
+        { id: 114, name: "Métal Violet Minuit", color: "#2c0a57" },
+        { id: 115, name: "Métal Violet Schafter", color: "#161629" },
+        { id: 116, name: "Métal Violet Clair", color: "#483B63" },
+        { id: 117, name: "Métal Blanc Crème", color: "#E5E5E5" },
+        { id: 118, name: "Métal Crème Glacée", color: "#FBFCF4" },
+        { id: 119, name: "Métal Blanc Neige", color: "#FFFFFF" },
+        { id: 120, name: "Métal Blanc Frost", color: "#F2F2F2" },
+        { id: 121, name: "Métal Beige Hêtre", color: "#c1ab6c" },
+        { id: 122, name: "Métal Brun Van", color: "#5b391b" },
+        { id: 123, name: "Métal Beige Platane", color: "#6b6b6b" },
+        { id: 124, name: "Métal Brun Terre", color: "#3b2e2a" },
+        { id: 125, name: "Métal Brun Désert", color: "#7b6c5a" },
+        { id: 126, name: "Métal Brun Noisette", color: "#5a4d41" },
+        { id: 127, name: "Métal Beige Pierre", color: "#d0c0b1" }
+    ],
+    // Couleurs mate (type 3)
+    matte: [
+        { id: 128, name: "Mat Noir", color: "#0d1116" },
+        { id: 129, name: "Mat Gris", color: "#32383d" },
+        { id: 130, name: "Mat Gris Clair", color: "#999da0" },
+        { id: 131, name: "Mat Blanc Glacé", color: "#FFFFFF" },
+        { id: 132, name: "Mat Bleu", color: "#1d5a76" },
+        { id: 133, name: "Mat Bleu Foncé", color: "#112552" },
+        { id: 134, name: "Mat Violet Minuit", color: "#2c0a57" },
+        { id: 135, name: "Mat Violet", color: "#483B63" },
+        { id: 136, name: "Mat Rouge", color: "#cf1f21" },
+        { id: 137, name: "Mat Rouge Foncé", color: "#7a0101" },
+        { id: 138, name: "Mat Orange", color: "#f44d00" },
+        { id: 139, name: "Mat Jaune", color: "#fcf64a" },
+        { id: 140, name: "Mat Lime", color: "#84c365" },
+        { id: 141, name: "Mat Vert", color: "#4e6443" },
+        { id: 142, name: "Mat Vert Forêt", color: "#222e46" },
+        { id: 143, name: "Mat Beige", color: "#c1ab6c" },
+        { id: 144, name: "Mat Brun Clair", color: "#7b6c5a" },
+        { id: 145, name: "Mat Brun Foncé", color: "#3b2e2a" },
+        { id: 146, name: "Mat Olive", color: "#6d6c3c" },
+        { id: 147, name: "Mat Tan", color: "#d0c0b1" },
+        { id: 148, name: "Mat Vert Armée", color: "#4d5d44" }
+    ],
+    // Couleurs métal (type 2)
+    metal: [
+        { id: 149, name: "Brossé Acier", color: "#999da0" },
+        { id: 150, name: "Brossé Noir Acier", color: "#1c1d21" },
+        { id: 151, name: "Brossé Aluminium", color: "#c2c4c6" },
+        { id: 152, name: "Chrome", color: "#e6e6e6" },
+        { id: 153, name: "Or", color: "#d4af37" },
+        { id: 154, name: "Bronze", color: "#cd7f32" },
+        { id: 155, name: "Or Rosé", color: "#e5c1a7" },
+        { id: 156, name: "Pur Gold", color: "#af9f6f" },
+        { id: 157, name: "Brossé Or", color: "#d4af37" },
+        { id: 158, name: "Argent Liquide", color: "#e6e6e6" }
+    ],
+    // Couleurs chameleon (type 4)
+    chameleon: [
+        { id: 159, name: "Chromatique", color: "#e6e6e6" }
+    ]
+};
 
 $(function () {
     // Données des catégories reçues du serveur
@@ -1199,49 +1181,87 @@ $(function () {
 
   
   // Fonction pour générer la palette de couleurs
+
   function generateColorPalette(type, activeColorId, paintType) {
+    console.log(`Génération palette ${type} avec paintType=${paintType} et activeColorId=${activeColorId}`);
+    
     const grid = $(`.${type}-colors`);
     grid.empty();
     
-    // Détermine quelles couleurs afficher en fonction du type de peinture
+    // Déterminer quelles couleurs afficher en fonction du type de peinture
     let colors = vehicleColors;
     
     // Si un type de peinture spécifique est fourni, filtrer les couleurs appropriées
     if (paintType !== undefined) {
-      if (paintType === 3) { // Mat
-        colors = matteColors;
-      } else if (paintType === 4) { // Métal brossé
-        colors = metalColors;
-      }
+        if (paintType === 3) { // Mat
+            colors = matteColors;
+        } else if (paintType === 4) { // Métal brossé
+            colors = metalColors;
+        } else {
+            // Pour les types 0 (Normal), 1 (Métallique), 2 (Nacré), 5 (Chrome)
+            // Utiliser les couleurs standard
+            colors = vehicleColors;
+        }
     }
-  
+    
+    console.log(`Affichage de ${colors.length} couleurs pour le type ${type}`);
+    
     // Générer les carrés de couleur
     for (const color of colors) {
-      const colorItem = $(`
-        <div class="color-item" style="background-color: ${color.color}" 
-             data-color="${color.id}" data-type="${type}" title="${color.name} (ID: ${color.id})"></div>
-      `);
-      
-      // Déterminer la couleur active selon le type
-      let isActive = false;
-      if (activeColorId !== undefined && color.id === activeColorId) {
-        isActive = true;
-      }
-      
-      if (isActive) {
-        colorItem.addClass("active");
-      }
-      
-      grid.append(colorItem);
+        const colorItem = $(`
+            <div class="color-item" style="background-color: ${color.color}" 
+                data-color="${color.id}" data-type="${type}" title="${color.name} (${color.id})"></div>
+        `);
+        
+        // Déterminer si la couleur est active
+        let isActive = false;
+        if (activeColorId !== undefined && color.id === activeColorId) {
+            isActive = true;
+            colorItem.addClass("active");
+        }
+        
+        // Gestionnaire d'événements pour la sélection de couleur
+        colorItem.on("click", function() {
+            $(`.color-item[data-type='${type}']`).removeClass("active selected");
+            $(this).addClass("active selected");
+            
+            // Stockage de la couleur sélectionnée pour une application ultérieure
+            if (type === "primary") {
+                selectedPrimaryColor = color.id;
+            } else if (type === "secondary") {
+                selectedSecondaryColor = color.id;
+            } else if (type === "pearl") {
+                selectedPearlColor = color.id;
+            }
+            
+            // Si l'application automatique est activée, appliquer immédiatement
+            if (autoApplyColors) {
+                const colorType = type === "primary" ? "primaryColor" : 
+                                  type === "secondary" ? "secondaryColor" : "pearlColor";
+                applyModification(colorType, color.id);
+                showNotification(`Couleur ${color.name} appliquée`);
+            }
+        });
+        
+        grid.append(colorItem);
     }
-  }
-  
+    
+    // Si aucune couleur n'a été ajoutée à la grille, afficher un message
+    if (grid.children().length === 0) {
+        grid.append(`<div class="no-colors-message">Aucune couleur disponible pour ce type de peinture</div>`);
+        console.log("Aucune couleur générée, vérifiez les tableaux de couleurs");
+    }
+}
+
+
   // Fonction pour générer la section peinture (complètement modifiée)
+
+  
   function generatePaintSection() {
     const paintSection = $("#paint-section");
     paintSection.empty();
     
-    // Section type de peinture avec bouton d'expansion (IMPORTANT!)
+    // Section type de peinture avec bouton d'expansion
     paintSection.append(`
       <div class="color-section">
         <div class="color-section-header">
@@ -1349,7 +1369,6 @@ $(function () {
       </div>
     `);
   
-  
     // Section couleur secondaire
     paintSection.append(`
       <div class="color-section">
@@ -1438,268 +1457,167 @@ $(function () {
     let selectedPrimaryColor = vehicleData.primaryColor;
     let selectedSecondaryColor = vehicleData.secondaryColor;
     let selectedPearlColor = vehicleData.pearlColor;
-    let currentPaintType = vehicleData.paintType || 0;
-    
-    // Générer les palettes de couleurs
-    generateColorPalette("primary", selectedPrimaryColor, currentPaintType);
-    generateColorPalette("secondary", selectedSecondaryColor, currentPaintType);
-    generateColorPalette("pearl", selectedPearlColor);
-  
-    // Initialiser les sélecteurs de couleur
-    initColorPickerCanvas("primary");
-    initColorPickerCanvas("secondary");
+    let currentPaintType = vehicleData.paintType !== undefined ? parseInt(vehicleData.paintType) : 0;
     
     // Marquer le type de peinture actif
-    if (vehicleData.paintType !== undefined) {
-      $(`.paint-type-item[data-type="${vehicleData.paintType}"]`).addClass('active');
-    } else {
-      // Par défaut, type "normal" (0) est actif
-      $(`.paint-type-item[data-type="0"]`).addClass('active');
-    }
+    $(`.paint-type-item[data-type="${currentPaintType}"]`).addClass('active');
     
-    // Par défaut, toutes les sections sont ouvertes au chargement
-    // Les icônes sont déjà configurées comme flèches vers le haut
-  
+    // Générer les palettes de couleurs
+    console.log("Génération des palettes avec currentPaintType =", currentPaintType);
+    generateColorPalette("primary", selectedPrimaryColor, currentPaintType);
+    generateColorPalette("secondary", selectedSecondaryColor, currentPaintType);
+    generateColorPalette("pearl", selectedPearlColor); // La couleur nacrée n'est pas affectée par le type
+    
     // Gestionnaire pour les types de peinture
     $(".paint-type-item").off('click').on("click", function() {
-      $(".paint-type-item").removeClass("active");
-      $(this).addClass("active");
-      const paintType = parseInt($(this).data("type"));
-      currentPaintType = paintType;
-      
-      // Appliquer uniquement le type de peinture sans modifier la couleur
-      applyModification("paintType", paintType);
-      
-      // Mettre à jour la palette de couleurs selon le type de peinture
-      generateColorPalette("primary", selectedPrimaryColor, paintType);
-      generateColorPalette("secondary", selectedSecondaryColor, paintType);
-      
-      // Afficher une notification avec des informations sur le type de peinture
-      const paintTypeName = $(this).find('.paint-type-name').text();
-      
-      // Notifications spécifiques par type
-      let message = `Type de peinture: ${paintTypeName}`;
-      if (paintType === 3) { // Mat
-        message += " - Les couleurs mates ont un aspect satiné sans reflet";
-      } else if (paintType === 4) { // Métal brossé
-        message += " - Les finitions métalliques ont des reflets directionnels";
-      } else if (paintType === 5) { // Chrome
-        message += " - La finition chrome ignore la couleur sélectionnée";
-      }
-      
-      showNotification(message);
-    });
-  
-    // Gestionnaires d'événements pour les onglets
-    $(".color-tab").off('click').on("click", function() {
-      const tabType = $(this).data("tab");
-      const target = $(this).data("target");
-      const section = $(this).closest(".color-section");
-      
-      // Mettre à jour les onglets
-      section.find(".color-tab").removeClass("active");
-      $(this).addClass("active");
-      
-      // Masquer tous les contenus d'abord
-      section.find(".color-content").hide();
-      
-      // Afficher seulement le contenu correspondant
-      if (tabType === "simple") {
-        $(`#${target}-simple-content`).show();
-        $(`#${target}-custom-content`).hide();
-      } else {
-        $(`#${target}-simple-content`).hide();
-        $(`#${target}-custom-content`).show();
-      }
+        $(".paint-type-item").removeClass("active");
+        $(this).addClass("active");
+        const paintType = parseInt($(this).data("type"));
+        currentPaintType = paintType;
+        
+        // Appliquer le type de peinture
+        console.log("Changement de type de peinture vers", paintType);
+        applyModification("paintType", paintType);
+        
+        // Mettre à jour les palettes de couleurs selon le type
+        generateColorPalette("primary", selectedPrimaryColor, paintType);
+        generateColorPalette("secondary", selectedSecondaryColor, paintType);
+        
+        // Message informatif
+        const paintTypeName = $(this).find('.paint-type-name').text();
+        showNotification(`Type de peinture: ${paintTypeName}`);
     });
     
-    // Gestionnaires pour sélection de couleur primaire
-    $(document).on("click", ".color-item[data-type='primary']", function() {
-      $(".color-item[data-type='primary']").removeClass("selected active");
-      $(this).addClass("selected active");
-      selectedPrimaryColor = parseInt($(this).data("color"));
-      
-      // Appliquer uniquement la couleur sans modifier le type de peinture
-      applyModification("primaryColor", selectedPrimaryColor);
-      const colorName = $(this).attr("title") || "Couleur";
-      
-      // Message spécial pour Chrome (type 5)
-      if (currentPaintType === 5) {
-        showNotification("La finition Chrome ne sera pas affectée par la couleur sélectionnée");
-      } else {
-        showNotification(`Couleur primaire: ${colorName}`);
-    }
-    
-    // Mise à jour de l'aperçu et des sliders de la couleur personnalisée
-    const colorObj = findGTAColorById(selectedPrimaryColor);
-    if (colorObj) {
-      const rgb = hexToRgb(colorObj.color);
-      updateColorValues('primary', rgb[0], rgb[1], rgb[2]);
-      $('#primary-preview').css('background-color', colorObj.color);
-    }
-  });
-  
-  // Gestionnaires pour sélection de couleur secondaire
-  $(document).on("click", ".color-item[data-type='secondary']", function() {
-    $(".color-item[data-type='secondary']").removeClass("selected active");
-    $(this).addClass("selected active");
-    selectedSecondaryColor = parseInt($(this).data("color"));
-    
-    // Appliquer uniquement la couleur sans modifier le type de peinture
-    applyModification("secondaryColor", selectedSecondaryColor);
-    const colorName = $(this).attr("title") || "Couleur";
-    
-    // Message spécial pour Chrome (type 5)
-    if (currentPaintType === 5) {
-      showNotification("La finition Chrome ne sera pas affectée par la couleur sélectionnée");
-    } else {
-      showNotification(`Couleur secondaire: ${colorName}`);
-    }
-    
-    // Mise à jour de l'aperçu et des sliders de la couleur personnalisée
-    const colorObj = findGTAColorById(selectedSecondaryColor);
-    if (colorObj) {
-      const rgb = hexToRgb(colorObj.color);
-      updateColorValues('secondary', rgb[0], rgb[1], rgb[2]);
-      $('#secondary-preview').css('background-color', colorObj.color);
-    }
-  });
-  
-  // Gestionnaire pour la couleur nacrée
-  $(document).on("click", ".color-item[data-type='pearl']", function() {
-    $(".color-item[data-type='pearl']").removeClass("selected active");
-    $(this).addClass("selected active");
-    selectedPearlColor = parseInt($(this).data("color"));
-    
-    // Appliquer uniquement la couleur nacrée
-    applyModification("pearlColor", selectedPearlColor);
-    const colorName = $(this).attr("title") || "Couleur";
-    
-    // Message différent selon le type de peinture
-    if (currentPaintType !== 2) {
-      showNotification(`Couleur nacrée: ${colorName} - Pour un effet optimal, utilisez le type Nacré`);
-    } else {
-      showNotification(`Couleur nacrée: ${colorName}`);
-    }
-  });
+    // Par défaut, toutes les sections sont ouvertes
+    $(".color-section").attr("data-expanded", "true");
 
-  // Définir toutes les sections comme expandées par défaut
-  $(".color-section").attr("data-expanded", "true");
+    // Boutons d'application et gestionnaires d'onglets
+    setupColorExpandButtons();
+    setupColorTabs();
+    
+    // Boutons d'application
+    $("#apply-primary-simple").off('click').on("click", function() {
+        if (selectedPrimaryColor !== undefined) {
+            applyModification("primaryColor", selectedPrimaryColor);
+            const colorName = $(`.color-item[data-type='primary'].selected`).attr("title") || "Couleur";
+            showNotification(`Couleur primaire appliquée: ${colorName}`);
+        }
+    });
+    
+    $("#apply-secondary-simple").off('click').on("click", function() {
+        if (selectedSecondaryColor !== undefined) {
+            applyModification("secondaryColor", selectedSecondaryColor);
+            const colorName = $(`.color-item[data-type='secondary'].selected`).attr("title") || "Couleur";
+            showNotification(`Couleur secondaire appliquée: ${colorName}`);
+        }
+    });
+    
+    $("#apply-pearl").off('click').on("click", function() {
+        if (selectedPearlColor !== undefined) {
+            applyModification("pearlColor", selectedPearlColor);
+            const colorName = $(`.color-item[data-type='pearl'].selected`).attr("title") || "Couleur";
+            showNotification(`Couleur nacrée appliquée: ${colorName}`);
+        }
+    });
+}
 
-  // Appliquer les gestionnaires d'événements améliorés
-  setupColorExpandButtons();
-  setupColorPickers();
-  
-  // Boutons d'application
-  $("#apply-primary-simple").off('click').on("click", function() {
-    if (selectedPrimaryColor !== undefined) {
-      applyModification("primaryColor", selectedPrimaryColor);
-      const colorName = $(`.color-item[data-type='primary'].selected`).attr("title") || "Couleur";
-      showNotification(`Couleur primaire appliquée: ${colorName}`);
-    }
-  });
-  
-  $("#apply-secondary-simple").off('click').on("click", function() {
-    if (selectedSecondaryColor !== undefined) {
-      applyModification("secondaryColor", selectedSecondaryColor);
-      const colorName = $(`.color-item[data-type='secondary'].selected`).attr("title") || "Couleur";
-      showNotification(`Couleur secondaire appliquée: ${colorName}`);
-    }
-  });
-  
-  $("#apply-pearl").off('click').on("click", function() {
-    if (selectedPearlColor !== undefined) {
-      applyModification("pearlColor", selectedPearlColor);
-      const colorName = $(`.color-item[data-type='pearl'].selected`).attr("title") || "Couleur";
-      showNotification(`Couleur nacrée appliquée: ${colorName}`);
-    }
-  });
-  
-  // Gestionnaires pour les couleurs personnalisées
-  $("#apply-primary-custom").off('click').on("click", function() {
-    const r = parseInt($("#primary-r-slider").val());
-    const g = parseInt($("#primary-g-slider").val());
-    const b = parseInt($("#primary-b-slider").val());
+
+// Fonction corrigée pour générer la palette de couleurs
+function generateColorPalette(type, activeColorId, paintType) {
+    const grid = $(`.${type}-colors`);
+    grid.empty();
     
-    if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
-      const closestColor = findClosestGTAColor(r, g, b);
-      applyModification("primaryColor", closestColor.id);
-      
-      // Mise à jour de l'interface
-      $(".color-item[data-type='primary']").removeClass("active");
-      $(`.color-item[data-type='primary'][data-color='${closestColor.id}']`).addClass("active");
-      
-      showNotification(`Couleur primaire personnalisée appliquée: ${closestColor.name}`);
-    }
-  });
-  
-  $("#apply-secondary-custom").off('click').on("click", function() {
-    const r = parseInt($("#secondary-r-slider").val());
-    const g = parseInt($("#secondary-g-slider").val());
-    const b = parseInt($("#secondary-b-slider").val());
+    // Détermine quelles couleurs afficher en fonction du type de peinture
+    let colors = vehicleColors;
     
-    if (!isNaN(r) && !isNaN(g) && !isNaN(b)) {
-      const closestColor = findClosestGTAColor(r, g, b);
-      applyModification("secondaryColor", closestColor.id);
-      
-      // Mise à jour de l'interface
-      $(".color-item[data-type='secondary']").removeClass("active");
-      $(`.color-item[data-type='secondary'][data-color='${closestColor.id}']`).addClass("active");
-      
-      showNotification(`Couleur secondaire personnalisée appliquée: ${closestColor.name}`);
+    // Si un type de peinture spécifique est fourni, filtrer les couleurs appropriées
+    if (paintType !== undefined) {
+        if (paintType === 3) { // Mat
+            colors = matteColors;
+        } else if (paintType === 4) { // Métal brossé
+            colors = metalColors;
+        } else if (paintType === 5) { // Chrome
+            // Pour chrome, on propose quand même les couleurs standard
+            // car le jeu permet de choisir une couleur même si elle est ignorée visuellement
+            colors = vehicleColors;
+        } else {
+            // Pour les types 0 (Normal), 1 (Métallique), 2 (Nacré), utiliser les couleurs standard
+            colors = vehicleColors;
+        }
     }
-  });
-  
-  // Fonction d'aide: trouver la couleur GTA par son ID
-  function findGTAColorById(id) {
+    
+    // Générer les carrés de couleur
+    for (const color of colors) {
+        const colorItem = $(`
+            <div class="color-item" style="background-color: ${color.color}" 
+                data-color="${color.id}" data-type="${type}" title="${color.name} (ID: ${color.id})"></div>
+        `);
+        
+        // Déterminer la couleur active selon le type
+        let isActive = false;
+        if (activeColorId !== undefined && color.id === activeColorId) {
+            isActive = true;
+        }
+        
+        if (isActive) {
+            colorItem.addClass("active");
+        }
+        
+        grid.append(colorItem);
+    }
+}
+
+// Fonction pour trouver une couleur GTA par son ID
+function findGTAColorById(id) {
     // Chercher dans toutes les collections de couleurs
     let collections = [vehicleColors, matteColors, metalColors];
     
     for (let collection of collections) {
-      let color = collection.find(color => color.id === id);
-      if (color) return color;
+        let color = collection.find(color => color.id === id);
+        if (color) return color;
     }
     
     return null;
-  }
-  
-  // Fonction d'aide: trouver la couleur GTA la plus proche d'une valeur RGB
-  function findClosestGTAColor(r, g, b) {
-    // Utiliser la collection appropriée selon le type de peinture
-    let colorsToCheck = vehicleColors;
+}
+
+// Fonction pour trouver la couleur GTA la plus proche d'une valeur RGB
+function findClosestGTAColor(r, g, b) {
+    // Déterminer quelle collection utiliser en fonction du type de peinture actuel
+    let colorsToCheck;
+    
     if (currentPaintType === 3) {
-      colorsToCheck = matteColors;
+        colorsToCheck = matteColors;
     } else if (currentPaintType === 4) {
-      colorsToCheck = metalColors;
+        colorsToCheck = metalColors;
+    } else {
+        colorsToCheck = vehicleColors; // Pour les types 0, 1, 2, 5
     }
     
     let closestColor = colorsToCheck[0];
     let minDistance = Number.MAX_VALUE;
     
     for (const color of colorsToCheck) {
-      const colorRgb = hexToRgb(color.color);
-      
-      // Calculer la distance de couleur (formule pondérée)
-      const rDiff = r - colorRgb[0];
-      const gDiff = g - colorRgb[1];
-      const bDiff = b - colorRgb[2];
-      
-      const distance = Math.sqrt(
-        rDiff * rDiff * 0.299 + 
-        gDiff * gDiff * 0.587 + 
-        bDiff * bDiff * 0.114
-      );
-      
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestColor = color;
-      }
+        const colorRgb = hexToRgb(color.color);
+        
+        // Calculer la distance de couleur (formule pondérée)
+        const rDiff = r - colorRgb[0];
+        const gDiff = g - colorRgb[1];
+        const bDiff = b - colorRgb[2];
+        
+        const distance = Math.sqrt(
+            rDiff * rDiff * 0.299 + 
+            gDiff * gDiff * 0.587 + 
+            bDiff * bDiff * 0.114
+        );
+        
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestColor = color;
+        }
     }
     
     return closestColor;
-  }
 }
-  
   // Fonction pour initialiser le canvas du sélecteur de couleur (modifiée)
   function initColorPickerCanvas(type) {
     // Au lieu d'un canvas, nous utilisons directement l'aperçu de couleur
@@ -2051,288 +1969,85 @@ $(function () {
   });
 }
 
-// Fonction pour configurer les événements des sliders et entrées avec prévisualisation en direct
+
 function setupColorPickers() {
-  ["primary", "secondary"].forEach(type => {
-    // Mettre à jour les valeurs quand les sliders RGB changent
-    $(`#${type}-r-slider, #${type}-g-slider, #${type}-b-slider`).on('input', function() {
-      const r = parseInt($(`#${type}-r-slider`).val());
-      const g = parseInt($(`#${type}-g-slider`).val());
-      const b = parseInt($(`#${type}-b-slider`).val());
-      
-      $(`#${type}-r-value`).text(r);
-      $(`#${type}-g-value`).text(g);
-      $(`#${type}-b-value`).text(b);
-      
-      // Mettre à jour hex
-      const hex = rgbToHex(r, g, b);
-      $(`#${type}-hex-value`).val(hex);
-      
-      // Convertir en HSB et mettre à jour
-      const hsb = rgbToHsb(r, g, b);
-      $(`#${type}-h-value`).val(hsb[0]);
-      $(`#${type}-s-value`).val(hsb[1]);
-      $(`#${type}-b-value`).val(hsb[2]);
-      
-      // Mettre à jour l'aperçu
-      $(`#${type}-preview`).css('background-color', `rgb(${r},${g},${b})`);
-      
-      // Appliquer après un délai (prévisualisation en direct)
-      clearTimeout(window[`${type}ColorTimeout`]);
-      window[`${type}ColorTimeout`] = setTimeout(() => {
-        const closestColor = findClosestGTAColor(r, g, b);
-        applyModification(`${type}Color`, closestColor.id);
-      }, 300);
+    ["primary", "secondary"].forEach(type => {
+        // Mettre à jour les valeurs quand les sliders RGB changent
+        $(`#${type}-r-slider, #${type}-g-slider, #${type}-b-slider`).on('input', function() {
+            const r = parseInt($(`#${type}-r-slider`).val());
+            const g = parseInt($(`#${type}-g-slider`).val());
+            const b = parseInt($(`#${type}-b-slider`).val());
+            
+            $(`#${type}-r-value`).text(r);
+            $(`#${type}-g-value`).text(g);
+            $(`#${type}-b-value`).text(b);
+            
+            // Mettre à jour hex
+            const hex = rgbToHex(r, g, b);
+            $(`#${type}-hex-value`).val(hex);
+            
+            // Convertir en HSB et mettre à jour
+            const hsb = rgbToHsb(r, g, b);
+            $(`#${type}-h-value`).val(hsb[0]);
+            $(`#${type}-s-value`).val(hsb[1]);
+            $(`#${type}-b-value`).val(hsb[2]);
+            
+            // Mettre à jour l'aperçu
+            $(`#${type}-preview`).css('background-color', `rgb(${r},${g},${b})`);
+            
+            // Appliquer après un délai (prévisualisation en direct)
+            clearTimeout(window[`${type}ColorTimeout`]);
+            window[`${type}ColorTimeout`] = setTimeout(() => {
+                const closestColor = findClosestGTAColor(r, g, b);
+                applyModification(`${type}Color`, closestColor.id);
+                
+                // Mettre à jour l'interface
+                $(`.color-item[data-type='${type}']`).removeClass("active");
+                $(`.color-item[data-type='${type}'][data-color='${closestColor.id}']`).addClass("active");
+            }, 300);
+        });
     });
-    
-    // Mettre à jour quand les valeurs HSB changent
-    $(`#${type}-h-value, #${type}-s-value, #${type}-b-value`).on('input', function() {
-      const h = parseInt($(`#${type}-h-value`).val() || 0);
-      const s = parseInt($(`#${type}-s-value`).val() || 0);
-      const b = parseInt($(`#${type}-b-value`).val() || 0);
-      
-      // Convertir en RGB
-      const rgb = hsbToRgb(h, s, b);
-      
-      // Mettre à jour sliders RGB
-      $(`#${type}-r-slider`).val(rgb[0]);
-      $(`#${type}-g-slider`).val(rgb[1]);
-      $(`#${type}-b-slider`).val(rgb[2]);
-      
-      // Mettre à jour valeurs
-      $(`#${type}-r-value`).text(rgb[0]);
-      $(`#${type}-g-value`).text(rgb[1]);
-      $(`#${type}-b-value`).text(rgb[2]);
-      
-      // Mettre à jour hex
-      const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
-      $(`#${type}-hex-value`).val(hex);
-      
-      // Mettre à jour slider de teinte
-      $(`#${type}-hue-slider`).val(h);
-      
-      // Mettre à jour l'aperçu
-      $(`#${type}-preview`).css('background-color', `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
-      
-      // Appliquer après un délai (prévisualisation en direct)
-      clearTimeout(window[`${type}ColorTimeout`]);
-      window[`${type}ColorTimeout`] = setTimeout(() => {
-        const closestColor = findClosestGTAColor(rgb[0], rgb[1], rgb[2]);
-        applyModification(`${type}Color`, closestColor.id);
-      }, 300);
-    });
-    
-    // Mettre à jour quand hex change
-    $(`#${type}-hex-value`).on('input', function() {
-      const hex = $(this).val();
-      if (/^#[0-9A-F]{6}$/i.test(hex)) {
-        const rgb = hexToRgb(hex);
-        
-        // Mettre à jour RGB
-        $(`#${type}-r-slider`).val(rgb[0]);
-        $(`#${type}-g-slider`).val(rgb[1]);
-        $(`#${type}-b-slider`).val(rgb[2]);
-        
-        $(`#${type}-r-value`).text(rgb[0]);
-        $(`#${type}-g-value`).text(rgb[1]);
-        $(`#${type}-b-value`).text(rgb[2]);
-        
-        // Convertir en HSB
-        const hsb = rgbToHsb(rgb[0], rgb[1], rgb[2]);
-        $(`#${type}-h-value`).val(hsb[0]);
-        $(`#${type}-s-value`).val(hsb[1]);
-        $(`#${type}-b-value`).val(hsb[2]);
-        
-        // Mettre à jour slider de teinte
-        $(`#${type}-hue-slider`).val(hsb[0]);
-        
-        // Mettre à jour l'aperçu
-        $(`#${type}-preview`).css('background-color', `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
-        
-        // Appliquer après un délai (prévisualisation en direct)
-        clearTimeout(window[`${type}ColorTimeout`]);
-        window[`${type}ColorTimeout`] = setTimeout(() => {
-          const closestColor = findClosestGTAColor(rgb[0], rgb[1], rgb[2]);
-          applyModification(`${type}Color`, closestColor.id);
-        }, 300);
-      }
-    });
-    
-    // Mettre à jour l'aperçu quand on change le slider de teinte
-    $(`#${type}-hue-slider`).on('input', function() {
-      const hue = parseInt($(this).val());
-      
-      // Mettre à jour la valeur H
-      $(`#${type}-h-value`).val(hue);
-      
-      // Récupérer les valeurs S et B actuelles
-      const s = parseInt($(`#${type}-s-value`).val() || 100);
-      const b = parseInt($(`#${type}-b-value`).val() || 100);
-      
-      // Convertir en RGB
-      const rgb = hsbToRgb(hue, s, b);
-      
-      // Mettre à jour les valeurs RGB
-      $(`#${type}-r-slider`).val(rgb[0]);
-      $(`#${type}-g-slider`).val(rgb[1]);
-      $(`#${type}-b-slider`).val(rgb[2]);
-      
-      $(`#${type}-r-value`).text(rgb[0]);
-      $(`#${type}-g-value`).text(rgb[1]);
-      $(`#${type}-b-value`).text(rgb[2]);
-      
-      // Mettre à jour hex
-      const hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
-      $(`#${type}-hex-value`).val(hex);
-      
-      // Mettre à jour l'aperçu
-      $(`#${type}-preview`).css('background-color', `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`);
-      
-      // Appliquer après un délai (prévisualisation en direct)
-      clearTimeout(window[`${type}ColorTimeout`]);
-      window[`${type}ColorTimeout`] = setTimeout(() => {
-        const closestColor = findClosestGTAColor(rgb[0], rgb[1], rgb[2]);
-        applyModification(`${type}Color`, closestColor.id);
-      }, 300);
-    });
-  });
 }
 
 
-
-
-  function setupColorExpandButtons() {
-    // Gestionnaire pour l'expansion/réduction des sections
-    $(".color-expand-btn").off('click').on("click", function() {
+function setupColorExpandButtons() {
+  $(".color-expand-btn").off('click').on("click", function() {
       const section = $(this).closest(".color-section");
-      const icon = $(this).find("i");
+      const content = section.find(".color-content, .color-tabs");
+      const isExpanded = section.attr("data-expanded") === "true";
       
-      // Pour éviter les animations multiples simultanées
-      if (section.is(":animated")) {
-        return false;
-      }
-      
-      // Toggle pour l'état du bouton
-      $(this).toggleClass("expanded");
-      
-      // Vérifier si l'icône est fa-chevron-up (section ouverte) ou fa-chevron-down (section fermée)
-      if (icon.hasClass("fa-chevron-up")) {
-        // Section ouverte qu'on veut fermer
-        icon.removeClass("fa-chevron-up").addClass("fa-chevron-down");
-        
-        // Masquer les onglets et tous les contenus
-        section.find(".color-tabs").slideUp(300);
-        section.find(".color-content").slideUp(300);
-        
-        // Enregistrer l'état dans un attribut de données
-        section.attr("data-expanded", "false");
+      if (isExpanded) {
+          content.slideUp(200);
+          section.attr("data-expanded", "false");
+          $(this).html('<i class="fas fa-chevron-down"></i>');
       } else {
-        // Section fermée qu'on veut ouvrir
-        icon.removeClass("fa-chevron-down").addClass("fa-chevron-up");
-        
-        // Afficher les onglets
-        section.find(".color-tabs").slideDown(300);
-        
-        // Trouver quel onglet est actif
-        const activeTab = section.find(".color-tab.active");
-        if (activeTab.length > 0) {
-          const tabType = activeTab.data("tab");
-          const target = activeTab.data("target");
-          
-          // Afficher uniquement le contenu de l'onglet actif
-          if (tabType === "simple") {
-            $(`#${target}-simple-content`).slideDown(300);
-            $(`#${target}-custom-content`).hide(); // S'assurer que l'autre reste caché
-          } else {
-            $(`#${target}-custom-content`).slideDown(300);
-            $(`#${target}-simple-content`).hide(); // S'assurer que l'autre reste caché
-          }
-        } else {
-          // Si aucun onglet n'est actif (cas rare), activer le premier par défaut
-          section.find(".color-tab").first().addClass("active");
-          const firstTabType = section.find(".color-tab").first().data("tab");
-          const firstTarget = section.find(".color-tab").first().data("target");
-          
-          if (firstTabType === "simple") {
-            $(`#${firstTarget}-simple-content`).slideDown(300);
-          } else {
-            $(`#${firstTarget}-custom-content`).slideDown(300);
-          }
-        }
-        
-        // Enregistrer l'état dans un attribut de données
-        section.attr("data-expanded", "true");
-        
-        // Si la section concerne les couleurs de peinture, comportement spécial
-        const sectionTitle = section.find(".color-title").text().toLowerCase();
-        if (sectionTitle.includes("primaire") || sectionTitle.includes("secondaire") || 
-            sectionTitle.includes("type de peinture") || sectionTitle.includes("nacrée")) {
-            
-          // Ouvrir les autres sections de peinture qui sont fermées
-          $(".color-section").each(function() {
-            const otherSection = $(this);
-            const otherTitle = otherSection.find(".color-title").text().toLowerCase();
-            
-            if ((otherTitle.includes("primaire") || otherTitle.includes("secondaire") || 
-                otherTitle.includes("type de peinture") || otherTitle.includes("nacrée")) && 
-                otherSection.attr("data-expanded") === "false") {
-              
-              // Ouvrir cette section aussi
-              const otherIcon = otherSection.find(".color-expand-btn i");
-              otherIcon.removeClass("fa-chevron-down").addClass("fa-chevron-up");
-              
-              // Afficher ses onglets
-              otherSection.find(".color-tabs").slideDown(300);
-              
-              // Trouver l'onglet actif de cette section
-              const otherActiveTab = otherSection.find(".color-tab.active");
-              if (otherActiveTab.length > 0) {
-                const otherTabType = otherActiveTab.data("tab");
-                const otherTarget = otherActiveTab.data("target");
-                
-                // Afficher uniquement le contenu de l'onglet actif
-                if (otherTabType === "simple") {
-                  $(`#${otherTarget}-simple-content`).slideDown(300);
-                } else {
-                  $(`#${otherTarget}-custom-content`).slideDown(300);
-                }
-              }
-              
-              otherSection.attr("data-expanded", "true");
-              otherSection.find(".color-expand-btn").addClass("expanded");
-            }
-          });
-        }
+          content.slideDown(200);
+          section.attr("data-expanded", "true");
+          $(this).html('<i class="fas fa-chevron-up"></i>');
       }
-      
-      // Empêcher la propagation de l'événement aux parents
-      return false;
-    });
-  }
+  });
+}
   
-  // Fonction améliorée pour les onglets
   function setupColorTabs() {
     $(".color-tab").off('click').on("click", function() {
-      const tabType = $(this).data("tab");
-      const target = $(this).data("target");
-      const section = $(this).closest(".color-section");
-      
-      // Mettre à jour les onglets
-      section.find(".color-tab").removeClass("active");
-      $(this).addClass("active");
-      
-      // Masquer tous les contenus de cette section
-      section.find(".color-content").hide();
-      
-      // Afficher seulement le contenu correspondant
-      if (tabType === "simple") {
-        $(`#${target}-simple-content`).show();
-      } else {
-        $(`#${target}-custom-content`).show();
-      }
+        const tabType = $(this).data("tab");
+        const target = $(this).data("target");
+        const section = $(this).closest(".color-section");
+        
+        // Mettre à jour les onglets
+        section.find(".color-tab").removeClass("active");
+        $(this).addClass("active");
+        
+        // Afficher le contenu approprié
+        if (tabType === "simple") {
+            $(`#${target}-simple-content`).show();
+            $(`#${target}-custom-content`).hide();
+        } else {
+            $(`#${target}-simple-content`).hide();
+            $(`#${target}-custom-content`).show();
+        }
     });
-  }
-  
+}
   // Ajouter cette ligne dans generatePaintSection() juste avant setupColorExpandButtons();
   function initializePaintSections() {
     // Définir l'état initial de toutes les sections
@@ -2527,73 +2242,52 @@ function setupColorPickers() {
 
 // Fonction pour générer l'interface de couleurs avec le nouveau design
 function generateColorUI() {
-  $("#color-container").empty();
+  const colorContainer = $("#color-container");
+  colorContainer.empty();
   
-  // Ajouter la classe auto-apply pour cacher les boutons
-  $("#color-container").addClass("auto-apply");
-
-  // Ajouter les boutons d'icônes en haut avec les icônes correctes
-  $("#color-container").append(`
-    <div class="top-icons-bar">
-      <div class="icon-btn active" data-section="paint">
-        <i class="fas fa-palette"></i>
-        <span>Peinture</span>
+  // Barre d'onglets supérieure pour les différentes sections (peinture, phares, etc.)
+  colorContainer.append(`
+      <div class="top-icons-bar">
+          <div class="icon-btn active" data-section="paint">
+              <i class="fas fa-palette"></i>
+              <span>Peinture</span>
+          </div>
+          <div class="icon-btn" data-section="headlights">
+              <i class="fas fa-lightbulb"></i>
+              <span>Phares</span>
+          </div>
+          <div class="icon-btn" data-section="neon">
+              <i class="fas fa-bolt"></i>
+              <span>Néons</span>
+          </div>
+          <div class="icon-btn" data-section="windows">
+              <i class="fas fa-car-side"></i>
+              <span>Vitres</span>
+          </div>
       </div>
-      <div class="icon-btn" data-section="xenon">
-        <i class="fas fa-lightbulb"></i>
-        <span>Phares</span>
-      </div>
-      <div class="icon-btn" data-section="neon">
-        <i class="fas fa-bolt"></i>
-        <span>Néons</span>
-      </div>
-      <div class="icon-btn" data-section="window">
-        <i class="fas fa-car-side"></i>
-        <span>Vitres</span>
-      </div>
-    </div>
   `);
-
-  // Conteneur principal pour chaque section
-  $("#color-container").append(`
-    <div id="paint-section" class="custom-section">
-      <!-- Section peinture -->
-    </div>
-    <div id="xenon-section" class="custom-section" style="display: none;">
-      <!-- Section phares xenon -->
-    </div>
-    <div id="neon-section" class="custom-section" style="display: none;">
-      <!-- Section néons -->
-    </div>
-    <div id="window-section" class="custom-section" style="display: none;">
-      <!-- Section vitres -->
-    </div>
-  `);
-
-  // SECTION PEINTURE
+  
+  // Génération des différentes sections
+  colorContainer.append(`<div id="paint-section" class="section-content"></div>`);
+  colorContainer.append(`<div id="headlights-section" class="section-content" style="display: none;"></div>`);
+  colorContainer.append(`<div id="neon-section" class="section-content" style="display: none;"></div>`);
+  colorContainer.append(`<div id="windows-section" class="section-content" style="display: none;"></div>`);
+  
+  // Générer le contenu des sections
   generatePaintSection();
-
-  // SECTION PHARES
-  generateXenonSection();
-
-  // SECTION NÉONS
+  generateHeadlightsSection();
   generateNeonSection();
-
-  // SECTION VITRES
-  generateWindowSection();
-
-
-  // Gestionnaire pour les icônes du haut
-  $(".icon-btn").on("click", function() {
-    $(".icon-btn").removeClass("active");
-    $(this).addClass("active");
-    
-    const section = $(this).data("section");
-    $(".custom-section").hide();
-    $(`#${section}-section`).show();
+  generateWindowsSection();
+  
+  // Gestionnaire d'événements pour les onglets supérieurs
+  $(".icon-btn").off('click').on("click", function() {
+      $(".icon-btn").removeClass("active");
+      $(this).addClass("active");
+      
+      const section = $(this).data("section");
+      $(".section-content").hide();
+      $(`#${section}-section`).show();
   });
-
-  setupAutoColorApplication();
 }
 
 // Mise à jour du style CSS
@@ -2993,39 +2687,24 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
   
   // Conversion RGB vers Hex
   function rgbToHex(r, g, b) {
-    return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase();
-  }
-  
-  // Conversion Hex vers RGB
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
 
+  // Conversion Hex vers RGB
   function hexToRgb(hex) {
-    // S'assurer que l'entrée est valide
-    if (!hex || typeof hex !== 'string') {
-      console.error("Invalid hex color value:", hex);
-      return [0, 0, 0]; // Valeur par défaut au lieu de null
-    }
-    
-    // Enlever le # si présent
     hex = hex.replace(/^#/, '');
-    
-    // Convertir 3 chiffres en 6 chiffres
     if (hex.length === 3) {
-      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
     }
     
-    // Vérifier que le format est valide
-    if (hex.length !== 6 || !/^[0-9A-Fa-f]{6}$/.test(hex)) {
-      console.error("Invalid hex color format:", hex);
-      return [0, 0, 0]; // Valeur par défaut
-    }
-    
-    const num = parseInt(hex, 16);
-    const r = (num >> 16) & 255;
-    const g = (num >> 8) & 255;
-    const b = num & 255;
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
     
     return [r, g, b];
-  }
+}
+
 
   // Conversion HSB vers RGB
   function hsbToRgb(h, s, b) {
@@ -3921,63 +3600,59 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
     );
   });
   
-  // Écouter les messages du jeu
   window.addEventListener("message", function (event) {
     const data = event.data;
-  
+
     if (data.action === "open") {
-      // Réinitialiser les données avec celles reçues
-      if (data.performanceCategories) {
-        performanceCategories = data.performanceCategories;
-      }
-  
-      if (data.exteriorCategories) {
-        exteriorCategories = data.exteriorCategories;
-      }
-  
-      if (data.interiorCategories) {
-        interiorCategories = data.interiorCategories;
-      }
-  
-      if (data.colorCategories) {
-        colorCategories = data.colorCategories;
-      }
-  
-      if (data.wheelCategories) {
-        wheelCategories = data.wheelCategories;
-      }
-  
-      if (data.windowTints) {
-        windowTints = data.windowTints;
-      }
-  
-      if (data.vehicleColors) {
-        vehicleColors = data.vehicleColors;
-      }
-  
-      if (data.wheelSmokeColors) {
-        wheelSmokeColors = data.wheelSmokeColors;
-      }
-  
-      // Mettre à jour les données du véhicule
-      if (data.vehicleData) {
-        vehicleData = data.vehicleData;
-      }
-  
-      // Afficher le menu
-      $("#customMenu").show();
-      $("#rotation-controls").show();
-  
-      // Activer le menu performance par défaut
-      $("#perf-btn").click();
+        // Réinitialiser les données avec celles reçues
+        if (data.performanceCategories) {
+            performanceCategories = data.performanceCategories;
+        }
+        if (data.exteriorCategories) {
+            exteriorCategories = data.exteriorCategories;
+        }
+        if (data.interiorCategories) {
+            interiorCategories = data.interiorCategories;
+        }
+        if (data.colorCategories) {
+            colorCategories = data.colorCategories;
+        }
+        if (data.wheelCategories) {
+            wheelCategories = data.wheelCategories;
+        }
+        if (data.windowTints) {
+            windowTints = data.windowTints;
+        }
+        
+        // IMPORTANT: Ne pas écraser les définitions de couleurs
+        // if (data.vehicleColors) {
+        //     vehicleColors = data.vehicleColors;
+        // }
+        
+        if (data.wheelSmokeColors) {
+            wheelSmokeColors = data.wheelSmokeColors;
+        }
+        
+        // Mettre à jour les données du véhicule
+        if (data.vehicleData) {
+            vehicleData = data.vehicleData;
+            console.log("Données véhicule reçues:", vehicleData);
+        }
+        
+        // Afficher le menu
+        $("#customMenu").show();
+        $("#rotation-controls").show();
+        
+        // Activer le menu performance par défaut
+        $("#perf-btn").click();
     } else if (data.action === "close") {
-      // Fermer le menu
-      $("#customMenu").hide();
-      $("#rotation-controls").hide();
+        $("#customMenu").hide();
+        $("#rotation-controls").hide();
     } else if (data.action === "updatePrice") {
-      // Mettre à jour le prix total
-      totalPrice = data.price;
-      $("#price").text("$" + totalPrice);
+        $("#price").text("$" + data.price);
     }
-  });
+});
+
+
+
   });
