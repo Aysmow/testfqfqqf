@@ -1,4 +1,7 @@
-const vehicleColors = {
+
+
+$(function () {
+  window.vehicleColors = {
     // Couleurs standards/classiques (type 0)
     standard: [
         { id: 0, name: "Noir", color: "#0d1116" },
@@ -176,7 +179,6 @@ const vehicleColors = {
     ]
 };
 
-$(function () {
     // Données des catégories reçues du serveur
     let performanceCategories = {};
     let exteriorCategories = {};
@@ -796,776 +798,12 @@ $(function () {
     });
   }
   
-  // Génération de la section néons
-  function generateNeonSection() {
-    const neonSection = $("#neon-section");
-    
-    // Activer/désactiver les néons
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Néons</div>
-        </div>
-        
-        <div class="color-content">
-          <div class="extra-toggle">
-            <div class="extra-toggle-btn ${vehicleData.neonsEnabled ? 'active' : ''}" id="neon-main-toggle"></div>
-            <div class="extra-toggle-label">Activer les néons</div>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Position des néons
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Position des néons</div>
-        </div>
-        
-        <div class="color-content">
-          <div class="neon-positions">
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[0] ? 'active' : ''}" data-position="0" id="neon-pos-0"></div>
-              <div class="extra-toggle-label">Néon avant</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[1] ? 'active' : ''}" data-position="1" id="neon-pos-1"></div>
-              <div class="extra-toggle-label">Néon arrière</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[2] ? 'active' : ''}" data-position="2" id="neon-pos-2"></div>
-              <div class="extra-toggle-label">Néon gauche</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[3] ? 'active' : ''}" data-position="3" id="neon-pos-3"></div>
-              <div class="extra-toggle-label">Néon droite</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Section couleur des néons avec onglets comme pour les couleurs
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Couleur des néons</div>
-        </div>
-        
-        <div class="color-tabs">
-          <div class="color-tab active" data-tab="simple" data-target="neon">Couleurs simples</div>
-          <div class="color-tab" data-tab="custom" data-target="neon">Couleur personnalisée</div>
-        </div>
-        
-        <div class="color-content" id="neon-simple-content">
-          <div class="neon-colors-grid">
-            <div class="color-item neon-color" data-rgb="255,255,255" style="background-color: rgb(255,255,255)"><span>Blanc</span></div>
-            <div class="color-item neon-color" data-rgb="255,0,0" style="background-color: rgb(255,0,0)"><span>Rouge</span></div>
-            <div class="color-item neon-color" data-rgb="0,255,0" style="background-color: rgb(0,255,0)"><span>Vert</span></div>
-            <div class="color-item neon-color" data-rgb="0,0,255" style="background-color: rgb(0,0,255)"><span>Bleu</span></div>
-            <div class="color-item neon-color" data-rgb="255,255,0" style="background-color: rgb(255,255,0)"><span>Jaune</span></div>
-            <div class="color-item neon-color" data-rgb="0,255,255" style="background-color: rgb(0,255,255)"><span>Cyan</span></div>
-            <div class="color-item neon-color" data-rgb="255,0,255" style="background-color: rgb(255,0,255)"><span>Rose</span></div>
-            <div class="color-item neon-color" data-rgb="255,165,0" style="background-color: rgb(255,165,0)"><span>Orange</span></div>
-            <div class="color-item neon-color" data-rgb="128,0,128" style="background-color: rgb(128,0,128)"><span>Violet</span></div>
-            <div class="color-item neon-color" data-rgb="50,205,50" style="background-color: rgb(50,205,50)"><span>Lime</span></div>
-            <div class="color-item neon-color" data-rgb="255,20,147" style="background-color: rgb(255,20,147)"><span>Fuschia</span></div>
-            <div class="color-item neon-color" data-rgb="70,130,180" style="background-color: rgb(70,130,180)"><span>Azur</span></div>
-          </div>
-          <button class="apply-color-btn" id="apply-neon-simple">Appliquer</button>
-        </div>
-        
-        <div class="color-content" id="neon-custom-content" style="display: none;">
-          <div class="neon-custom-colors">
-            <div class="neon-preview" id="neon-preview"></div>
-            <div class="rgb-sliders">
-              <div class="rgb-slider">
-                <span>R</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}" id="neon-r-slider">
-                <span id="neon-r-value">${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}</span>
-              </div>
-              <div class="rgb-slider">
-                <span>G</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}" id="neon-g-slider">
-                <span id="neon-g-value">${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}</span>
-              </div>
-              <div class="rgb-slider">
-                <span>B</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}" id="neon-b-slider">
-                <span id="neon-b-value">${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}</span>
-              </div>
-            </div>
-            <button class="apply-color-btn" id="apply-neon-custom">Appliquer</button>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Variable pour suivre la couleur de néon sélectionnée
-    let selectedNeonRGB = vehicleData.neonColor ? [...vehicleData.neonColor] : [255, 0, 255];
-    
-    // Mettre à jour la couleur active des néons
-    if (vehicleData.neonColor) {
-      const r = vehicleData.neonColor[0];
-      const g = vehicleData.neonColor[1];
-      const b = vehicleData.neonColor[2];
-      
-      // Sélectionner la couleur prédéfinie si elle correspond
-      $(`.neon-color`).each(function() {
-        const rgb = $(this).data('rgb').split(',');
-        if (parseInt(rgb[0]) === r && parseInt(rgb[1]) === g && parseInt(rgb[2]) === b) {
-          $(this).addClass('active');
-        }
-      });
-      
-      // Mettre à jour l'aperçu de couleur personnalisée
-      $('#neon-preview').css('background-color', `rgb(${r},${g},${b})`);
-    } else {
-      // Couleur par défaut (rose)
-      $('#neon-preview').css('background-color', 'rgb(255,0,255)');
-    }
-    
-    // Gestionnaires d'événements
-    
-    // Toggle principal des néons
-    $("#neon-main-toggle").on("click", function() {
-      const isActive = $(this).hasClass("active");
-      if (isActive) {
-        $(this).removeClass("active");
-        applyModification("neons", 0);
-        showNotification("Néons désactivés");
-      } else {
-        $(this).addClass("active");
-        applyModification("neons", 1);
-        showNotification("Néons activés");
-      }
-    });
-    
-    // Gestion des positions de néons
-    $(".neon-positions .extra-toggle-btn").on("click", function() {
-      const isActive = $(this).hasClass("active");
-      const position = parseInt($(this).data("position"));
-      
-      if (isActive) {
-        $(this).removeClass("active");
-        applyModification("neonPosition", 0, position);
-      } else {
-        $(this).addClass("active");
-        applyModification("neonPosition", 1, position);
-        
-        // Activer les néons si pas déjà actifs
-        if (!$("#neon-main-toggle").hasClass("active")) {
-          $("#neon-main-toggle").addClass("active");
-          applyModification("neons", 1);
-        }
-      }
-    });
-    
-    // Gestionnaires d'événements pour les onglets
-    $(".color-tab[data-target='neon']").on("click", function() {
-      const tabType = $(this).data("tab");
-      
-      // Mettre à jour les onglets
-      $(".color-tab[data-target='neon']").removeClass("active");
-      $(this).addClass("active");
-      
-      // Afficher le contenu correspondant
-      if (tabType === "simple") {
-        $("#neon-simple-content").show();
-        $("#neon-custom-content").hide();
-      } else {
-        $("#neon-simple-content").hide();
-        $("#neon-custom-content").show();
-      }
-    });
-    
-    // Sélection des couleurs prédéfinies
-    $(".neon-color").on("click", function() {
-      $(".neon-color").removeClass("selected");
-      $(this).addClass("selected");
-      
-      const rgb = $(this).data("rgb").split(',');
-      selectedNeonRGB = [parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])];
-    });
-    
-    // Appliquer la couleur simple sélectionnée
-    $("#apply-neon-simple").on("click", function() {
-      if (selectedNeonRGB) {
-        // Appliquer la couleur
-        applyModification("neonColor", null, selectedNeonRGB);
-        
-        // Mettre à jour l'interface
-        $(".neon-color").removeClass("active");
-        $(".neon-color.selected").addClass("active");
-        
-        // Mettre à jour l'aperçu
-        $("#neon-preview").css("background-color", `rgb(${selectedNeonRGB[0]},${selectedNeonRGB[1]},${selectedNeonRGB[2]})`);
-        
-        // Mettre à jour les sliders
-        $("#neon-r-slider").val(selectedNeonRGB[0]);
-        $("#neon-g-slider").val(selectedNeonRGB[1]);
-        $("#neon-b-slider").val(selectedNeonRGB[2]);
-        
-        // Mettre à jour les valeurs affichées
-        $("#neon-r-value").text(selectedNeonRGB[0]);
-        $("#neon-g-value").text(selectedNeonRGB[1]);
-        $("#neon-b-value").text(selectedNeonRGB[2]);
-        
-        // Activer les néons si pas déjà actifs
-        if (!$("#neon-main-toggle").hasClass("active")) {
-          $("#neon-main-toggle").addClass("active");
-          applyModification("neons", 1);
-        }
-        
-        // Notification
-        const colorName = $(".neon-color.selected span").text();
-        showNotification(`Couleur de néon: ${colorName}`);
-      }
-    });
-    
-    // Mise à jour en direct des sliders RGB
-    $("#neon-r-slider, #neon-g-slider, #neon-b-slider").on("input", function() {
-      const r = parseInt($("#neon-r-slider").val());
-      const g = parseInt($("#neon-g-slider").val());
-      const b = parseInt($("#neon-b-slider").val());
-      
-      // Mettre à jour les valeurs et l'aperçu
-      $("#neon-r-value").text(r);
-      $("#neon-g-value").text(g);
-      $("#neon-b-value").text(b);
-      $("#neon-preview").css("background-color", `rgb(${r},${g},${b})`);
-      
-      // Appliquer la couleur après un petit délai
-      clearTimeout(window.neonColorTimeout);
-      window.neonColorTimeout = setTimeout(() => {
-        applyModification("neonColor", null, [r, g, b]);
-        
-        // Activer les néons si nécessaire
-        if (!$("#neon-main-toggle").hasClass("active")) {
-          $("#neon-main-toggle").addClass("active");
-          applyModification("neons", 1);
-        }
-      }, 300);
-    });
-  
-    // Appliquer la couleur personnalisée
-    $("#apply-neon-custom").on("click", function() {
-      // Appliquer la couleur
-      applyModification("neonColor", null, selectedNeonRGB);
-      
-      // Désélectionner les couleurs prédéfinies et réinitialiser la sélection active
-      $(".neon-color").removeClass("active selected");
-      
-      // Trouver si une couleur prédéfinie correspond
-      let matchFound = false;
-      $(`.neon-color`).each(function() {
-        const rgb = $(this).data('rgb').split(',');
-        if (parseInt(rgb[0]) === selectedNeonRGB[0] && 
-            parseInt(rgb[1]) === selectedNeonRGB[1] && 
-            parseInt(rgb[2]) === selectedNeonRGB[2]) {
-          $(this).addClass('active');
-          matchFound = true;
-        }
-      });
-      
-      // Activer les néons si pas déjà actifs
-      if (!$("#neon-main-toggle").hasClass("active")) {
-        $("#neon-main-toggle").addClass("active");
-        applyModification("neons", 1);
-      }
-      
-      // Notification
-      showNotification(`Couleur de néon RGB(${selectedNeonRGB[0]}, ${selectedNeonRGB[1]}, ${selectedNeonRGB[2]}) appliquée`);
-    });
-  }
-  
-  // Génération de la section vitres
-  function generateWindowSection() {
-    const windowSection = $("#window-section");
-    
-    // Teinte des vitres
-    windowSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Teinte des vitres</div>
-        </div>
-        
-        <div class="color-content">
-          <div class="tint-options-grid">
-            <div class="tint-option" data-tint-id="-1">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Stock</div>
-                <div class="tint-price">$0</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="0">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Aucune</div>
-                <div class="tint-price">$100</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="1">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.9)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Pure Black</div>
-                <div class="tint-price">$500</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="2">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.75)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Dark Smoke</div>
-                <div class="tint-price">$400</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="3">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.5)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Light Smoke</div>
-                <div class="tint-price">$300</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="4">
-              <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.85)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Limo</div>
-                <div class="tint-price">$600</div>
-              </div>
-            </div>
-            <div class="tint-option" data-tint-id="5">
-              <div class="tint-preview" style="background-color: rgba(0, 100, 0, 0.5)"></div>
-              <div class="tint-info">
-                <div class="tint-name">Green</div>
-                <div class="tint-price">$300</div>
-              </div>
-            </div>
-          </div>
-          <button class="apply-color-btn" id="apply-window-tint">Appliquer</button>
-        </div>
-      </div>
-    `);
-    
-    // Variable pour suivre la teinte sélectionnée
-    let selectedTintId = vehicleData.windowTint;
-    
-    // Sélectionner la teinte active
-    if (vehicleData.windowTint !== undefined) {
-      $(`.tint-option[data-tint-id="${vehicleData.windowTint}"]`).addClass('active');
-    }
-    
-    // Gestionnaires d'événements
-    $(".tint-option").on("click", function() {
-      $(".tint-option").removeClass("selected");
-      $(this).addClass("selected");
-      selectedTintId = parseInt($(this).data("tint-id"));
-    });
-    
-    $("#apply-window-tint").on("click", function() {
-      if (selectedTintId !== undefined) {
-        // Appliquer la teinte
-        applyModification("windowTint", selectedTintId);
-        
-        // Mettre à jour l'interface
-        $(".tint-option").removeClass("active");
-        $(`.tint-option[data-tint-id="${selectedTintId}"]`).addClass("active");
-        
-        // Notification
-        const tintName = $(`.tint-option[data-tint-id="${selectedTintId}"] .tint-name`).text();
-        showNotification(`Teinte des vitres: ${tintName}`);
-      }
-    });
-  }
 
   
-  // Fonction pour générer la palette de couleurs
-
-  function generateColorPalette(type, activeColorId, paintType) {
-    console.log(`Génération palette ${type} avec paintType=${paintType} et activeColorId=${activeColorId}`);
-    
-    const grid = $(`.${type}-colors`);
-    grid.empty();
-    
-    // Déterminer quelles couleurs afficher en fonction du type de peinture
-    let colors = vehicleColors;
-    
-    // Si un type de peinture spécifique est fourni, filtrer les couleurs appropriées
-    if (paintType !== undefined) {
-        if (paintType === 3) { // Mat
-            colors = matteColors;
-        } else if (paintType === 4) { // Métal brossé
-            colors = metalColors;
-        } else {
-            // Pour les types 0 (Normal), 1 (Métallique), 2 (Nacré), 5 (Chrome)
-            // Utiliser les couleurs standard
-            colors = vehicleColors;
-        }
-    }
-    
-    console.log(`Affichage de ${colors.length} couleurs pour le type ${type}`);
-    
-    // Générer les carrés de couleur
-    for (const color of colors) {
-        const colorItem = $(`
-            <div class="color-item" style="background-color: ${color.color}" 
-                data-color="${color.id}" data-type="${type}" title="${color.name} (${color.id})"></div>
-        `);
-        
-        // Déterminer si la couleur est active
-        let isActive = false;
-        if (activeColorId !== undefined && color.id === activeColorId) {
-            isActive = true;
-            colorItem.addClass("active");
-        }
-        
-        // Gestionnaire d'événements pour la sélection de couleur
-        colorItem.on("click", function() {
-            $(`.color-item[data-type='${type}']`).removeClass("active selected");
-            $(this).addClass("active selected");
-            
-            // Stockage de la couleur sélectionnée pour une application ultérieure
-            if (type === "primary") {
-                selectedPrimaryColor = color.id;
-            } else if (type === "secondary") {
-                selectedSecondaryColor = color.id;
-            } else if (type === "pearl") {
-                selectedPearlColor = color.id;
-            }
-            
-            // Si l'application automatique est activée, appliquer immédiatement
-            if (autoApplyColors) {
-                const colorType = type === "primary" ? "primaryColor" : 
-                                  type === "secondary" ? "secondaryColor" : "pearlColor";
-                applyModification(colorType, color.id);
-                showNotification(`Couleur ${color.name} appliquée`);
-            }
-        });
-        
-        grid.append(colorItem);
-    }
-    
-    // Si aucune couleur n'a été ajoutée à la grille, afficher un message
-    if (grid.children().length === 0) {
-        grid.append(`<div class="no-colors-message">Aucune couleur disponible pour ce type de peinture</div>`);
-        console.log("Aucune couleur générée, vérifiez les tableaux de couleurs");
-    }
-}
 
 
-  // Fonction pour générer la section peinture (complètement modifiée)
-
-  
-  function generatePaintSection() {
-    const paintSection = $("#paint-section");
-    paintSection.empty();
-    
-    // Section type de peinture avec bouton d'expansion
-    paintSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Type de peinture</div>
-          <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
-        </div>
-        
-        <div class="color-content" id="paint-type-content">
-          <div class="paint-type-grid">
-            <div class="paint-type-item" data-type="0">
-              <div class="paint-type-name">Normal</div>
-              <div class="paint-type-price">$500</div>
-            </div>
-            <div class="paint-type-item" data-type="1">
-              <div class="paint-type-name">Métallique</div>
-              <div class="paint-type-price">$700</div>
-            </div>
-            <div class="paint-type-item" data-type="2">
-              <div class="paint-type-name">Nacré</div>
-              <div class="paint-type-price">$1000</div>
-            </div>
-            <div class="paint-type-item" data-type="3">
-              <div class="paint-type-name">Mat</div>
-              <div class="paint-type-price">$900</div>
-            </div>
-            <div class="paint-type-item" data-type="4">
-              <div class="paint-type-name">Métal brossé</div>
-              <div class="paint-type-price">$1200</div>
-            </div>
-            <div class="paint-type-item" data-type="5">
-              <div class="paint-type-name">Chrome</div>
-              <div class="paint-type-price">$1500</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Section couleur primaire
-    paintSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Couleur primaire</div>
-          <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
-        </div>
-  
-        <div class="color-tabs">
-          <div class="color-tab active" data-tab="simple" data-target="primary">Couleurs simples</div>
-          <div class="color-tab" data-tab="custom" data-target="primary">Couleur personnalisée</div>
-        </div>
-  
-        <div class="color-content" id="primary-simple-content">
-          <div class="color-grid primary-colors"></div>
-          <button class="apply-color-btn" id="apply-primary-simple">Appliquer</button>
-        </div>
-  
-        <div class="color-content" id="primary-custom-content" style="display: none;">
-          <div class="color-picker-container">
-            <div id="primary-preview" class="color-preview"></div>
-            <div class="gradient-slider">
-              <input type="range" min="0" max="360" value="0" class="hue-slider" id="primary-hue-slider">
-            </div>
-            
-            <div class="color-picker-controls">
-              <div class="rgb-sliders">
-                <div class="rgb-slider">
-                  <span>R</span>
-                  <input type="range" min="0" max="255" value="255" id="primary-r-slider">
-                  <span id="primary-r-value">255</span>
-                </div>
-                <div class="rgb-slider">
-                  <span>G</span>
-                  <input type="range" min="0" max="255" value="0" id="primary-g-slider">
-                  <span id="primary-g-value">0</span>
-                </div>
-                <div class="rgb-slider">
-                  <span>B</span>
-                  <input type="range" min="0" max="255" value="0" id="primary-b-slider">
-                  <span id="primary-b-value">0</span>
-                </div>
-              </div>
-              
-              <div class="color-picker-values">
-                <div class="color-input">
-                  <span>Hex</span>
-                  <input type="text" value="#FF0000" id="primary-hex-value">
-                </div>
-                <div class="color-input">
-                  <span>H</span>
-                  <input type="number" min="0" max="360" value="0" id="primary-h-value">
-                </div>
-                <div class="color-input">
-                  <span>S</span>
-                  <input type="number" min="0" max="100" value="100" id="primary-s-value">
-                </div>
-                <div class="color-input">
-                  <span>B</span>
-                  <input type="number" min="0" max="100" value="100" id="primary-b-value">
-                </div>
-              </div>
-            </div>
-            <button class="apply-color-btn" id="apply-primary-custom">Appliquer</button>
-          </div>
-        </div>
-      </div>
-    `);
-  
-    // Section couleur secondaire
-    paintSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Couleur secondaire</div>
-          <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
-        </div>
-  
-        <div class="color-tabs">
-          <div class="color-tab active" data-tab="simple" data-target="secondary">Couleurs simples</div>
-          <div class="color-tab" data-tab="custom" data-target="secondary">Couleur personnalisée</div>
-        </div>
-  
-        <div class="color-content" id="secondary-simple-content">
-          <div class="color-grid secondary-colors"></div>
-          <button class="apply-color-btn" id="apply-secondary-simple">Appliquer</button>
-        </div>
-  
-        <div class="color-content" id="secondary-custom-content" style="display: none;">
-          <div class="color-picker-container">
-            <div id="secondary-preview" class="color-preview"></div>
-            <div class="gradient-slider">
-              <input type="range" min="0" max="360" value="0" class="hue-slider" id="secondary-hue-slider">
-            </div>
-            
-            <div class="color-picker-controls">
-              <div class="rgb-sliders">
-                <div class="rgb-slider">
-                  <span>R</span>
-                  <input type="range" min="0" max="255" value="255" id="secondary-r-slider">
-                  <span id="secondary-r-value">255</span>
-                </div>
-                <div class="rgb-slider">
-                  <span>G</span>
-                  <input type="range" min="0" max="255" value="0" id="secondary-g-slider">
-                  <span id="secondary-g-value">0</span>
-                </div>
-                <div class="rgb-slider">
-                  <span>B</span>
-                  <input type="range" min="0" max="255" value="0" id="secondary-b-slider">
-                  <span id="secondary-b-value">0</span>
-                </div>
-              </div>
-              
-              <div class="color-picker-values">
-                <div class="color-input">
-                  <span>Hex</span>
-                  <input type="text" value="#FF0000" id="secondary-hex-value">
-                </div>
-                <div class="color-input">
-                  <span>H</span>
-                  <input type="number" min="0" max="360" value="0" id="secondary-h-value">
-                </div>
-                <div class="color-input">
-                  <span>S</span>
-                  <input type="number" min="0" max="100" value="100" id="secondary-s-value">
-                </div>
-                <div class="color-input">
-                  <span>B</span>
-                  <input type="number" min="0" max="100" value="100" id="secondary-b-value">
-                </div>
-              </div>
-            </div>
-            <button class="apply-color-btn" id="apply-secondary-custom">Appliquer</button>
-          </div>
-        </div>
-      </div>
-    `);
-  
-    // Section couleur nacrée avec bouton d'expansion
-    paintSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Couleur nacrée</div>
-          <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
-        </div>
-        
-        <div class="color-content" id="pearl-content">
-          <div class="color-grid pearl-colors"></div>
-          <button class="apply-color-btn" id="apply-pearl">Appliquer</button>
-        </div>
-      </div>
-    `);
-  
-    // Variables pour suivre les couleurs sélectionnées mais pas encore appliquées
-    let selectedPrimaryColor = vehicleData.primaryColor;
-    let selectedSecondaryColor = vehicleData.secondaryColor;
-    let selectedPearlColor = vehicleData.pearlColor;
-    let currentPaintType = vehicleData.paintType !== undefined ? parseInt(vehicleData.paintType) : 0;
-    
-    // Marquer le type de peinture actif
-    $(`.paint-type-item[data-type="${currentPaintType}"]`).addClass('active');
-    
-    // Générer les palettes de couleurs
-    console.log("Génération des palettes avec currentPaintType =", currentPaintType);
-    generateColorPalette("primary", selectedPrimaryColor, currentPaintType);
-    generateColorPalette("secondary", selectedSecondaryColor, currentPaintType);
-    generateColorPalette("pearl", selectedPearlColor); // La couleur nacrée n'est pas affectée par le type
-    
-    // Gestionnaire pour les types de peinture
-    $(".paint-type-item").off('click').on("click", function() {
-        $(".paint-type-item").removeClass("active");
-        $(this).addClass("active");
-        const paintType = parseInt($(this).data("type"));
-        currentPaintType = paintType;
-        
-        // Appliquer le type de peinture
-        console.log("Changement de type de peinture vers", paintType);
-        applyModification("paintType", paintType);
-        
-        // Mettre à jour les palettes de couleurs selon le type
-        generateColorPalette("primary", selectedPrimaryColor, paintType);
-        generateColorPalette("secondary", selectedSecondaryColor, paintType);
-        
-        // Message informatif
-        const paintTypeName = $(this).find('.paint-type-name').text();
-        showNotification(`Type de peinture: ${paintTypeName}`);
-    });
-    
-    // Par défaut, toutes les sections sont ouvertes
-    $(".color-section").attr("data-expanded", "true");
-
-    // Boutons d'application et gestionnaires d'onglets
-    setupColorExpandButtons();
-    setupColorTabs();
-    
-    // Boutons d'application
-    $("#apply-primary-simple").off('click').on("click", function() {
-        if (selectedPrimaryColor !== undefined) {
-            applyModification("primaryColor", selectedPrimaryColor);
-            const colorName = $(`.color-item[data-type='primary'].selected`).attr("title") || "Couleur";
-            showNotification(`Couleur primaire appliquée: ${colorName}`);
-        }
-    });
-    
-    $("#apply-secondary-simple").off('click').on("click", function() {
-        if (selectedSecondaryColor !== undefined) {
-            applyModification("secondaryColor", selectedSecondaryColor);
-            const colorName = $(`.color-item[data-type='secondary'].selected`).attr("title") || "Couleur";
-            showNotification(`Couleur secondaire appliquée: ${colorName}`);
-        }
-    });
-    
-    $("#apply-pearl").off('click').on("click", function() {
-        if (selectedPearlColor !== undefined) {
-            applyModification("pearlColor", selectedPearlColor);
-            const colorName = $(`.color-item[data-type='pearl'].selected`).attr("title") || "Couleur";
-            showNotification(`Couleur nacrée appliquée: ${colorName}`);
-        }
-    });
-}
 
 
-// Fonction corrigée pour générer la palette de couleurs
-function generateColorPalette(type, activeColorId, paintType) {
-    const grid = $(`.${type}-colors`);
-    grid.empty();
-    
-    // Détermine quelles couleurs afficher en fonction du type de peinture
-    let colors = vehicleColors;
-    
-    // Si un type de peinture spécifique est fourni, filtrer les couleurs appropriées
-    if (paintType !== undefined) {
-        if (paintType === 3) { // Mat
-            colors = matteColors;
-        } else if (paintType === 4) { // Métal brossé
-            colors = metalColors;
-        } else if (paintType === 5) { // Chrome
-            // Pour chrome, on propose quand même les couleurs standard
-            // car le jeu permet de choisir une couleur même si elle est ignorée visuellement
-            colors = vehicleColors;
-        } else {
-            // Pour les types 0 (Normal), 1 (Métallique), 2 (Nacré), utiliser les couleurs standard
-            colors = vehicleColors;
-        }
-    }
-    
-    // Générer les carrés de couleur
-    for (const color of colors) {
-        const colorItem = $(`
-            <div class="color-item" style="background-color: ${color.color}" 
-                data-color="${color.id}" data-type="${type}" title="${color.name} (ID: ${color.id})"></div>
-        `);
-        
-        // Déterminer la couleur active selon le type
-        let isActive = false;
-        if (activeColorId !== undefined && color.id === activeColorId) {
-            isActive = true;
-        }
-        
-        if (isActive) {
-            colorItem.addClass("active");
-        }
-        
-        grid.append(colorItem);
-    }
-}
 
 // Fonction pour trouver une couleur GTA par son ID
 function findGTAColorById(id) {
@@ -1679,296 +917,6 @@ function findClosestGTAColor(r, g, b) {
     });
   }
   
-  // Fonction pour générer la section néons avec application automatique
-  function generateNeonSection() {
-    const neonSection = $("#neon-section");
-    
-    // Activer/désactiver les néons
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Néons</div>
-        </div>
-        
-        <div class="color-content">
-          <div class="extra-toggle">
-            <div class="extra-toggle-btn ${vehicleData.neonsEnabled ? 'active' : ''}" id="neon-main-toggle"></div>
-            <div class="extra-toggle-label">Activer les néons</div>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Position des néons
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Position des néons</div>
-        </div>
-        
-        <div class="color-content">
-          <div class="neon-positions">
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[0] ? 'active' : ''}" data-position="0" id="neon-pos-0"></div>
-              <div class="extra-toggle-label">Néon avant</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[1] ? 'active' : ''}" data-position="1" id="neon-pos-1"></div>
-              <div class="extra-toggle-label">Néon arrière</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[2] ? 'active' : ''}" data-position="2" id="neon-pos-2"></div>
-              <div class="extra-toggle-label">Néon gauche</div>
-            </div>
-            <div class="extra-toggle">
-              <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[3] ? 'active' : ''}" data-position="3" id="neon-pos-3"></div>
-              <div class="extra-toggle-label">Néon droite</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Section couleur des néons avec onglets
-    neonSection.append(`
-      <div class="color-section">
-        <div class="color-section-header">
-          <div class="color-title">Couleur des néons</div>
-        </div>
-        
-        <div class="color-tabs">
-          <div class="color-tab active" data-tab="simple" data-target="neon">Couleurs simples</div>
-          <div class="color-tab" data-tab="custom" data-target="neon">Couleur personnalisée</div>
-        </div>
-        
-        <div class="color-content" id="neon-simple-content">
-          <div class="neon-colors-grid">
-            <div class="color-item neon-color" data-rgb="255,255,255" style="background-color: rgb(255,255,255)"><span>Blanc</span></div>
-            <div class="color-item neon-color" data-rgb="255,0,0" style="background-color: rgb(255,0,0)"><span>Rouge</span></div>
-            <div class="color-item neon-color" data-rgb="0,255,0" style="background-color: rgb(0,255,0)"><span>Vert</span></div>
-            <div class="color-item neon-color" data-rgb="0,0,255" style="background-color: rgb(0,0,255)"><span>Bleu</span></div>
-            <div class="color-item neon-color" data-rgb="255,255,0" style="background-color: rgb(255,255,0)"><span>Jaune</span></div>
-            <div class="color-item neon-color" data-rgb="0,255,255" style="background-color: rgb(0,255,255)"><span>Cyan</span></div>
-            <div class="color-item neon-color" data-rgb="255,0,255" style="background-color: rgb(255,0,255)"><span>Rose</span></div>
-            <div class="color-item neon-color" data-rgb="255,165,0" style="background-color: rgb(255,165,0)"><span>Orange</span></div>
-            <div class="color-item neon-color" data-rgb="128,0,128" style="background-color: rgb(128,0,128)"><span>Violet</span></div>
-            <div class="color-item neon-color" data-rgb="50,205,50" style="background-color: rgb(50,205,50)"><span>Lime</span></div>
-            <div class="color-item neon-color" data-rgb="255,20,147" style="background-color: rgb(255,20,147)"><span>Fuschia</span></div>
-            <div class="color-item neon-color" data-rgb="70,130,180" style="background-color: rgb(70,130,180)"><span>Azur</span></div>
-          </div>
-        </div>
-        
-        <div class="color-content" id="neon-custom-content" style="display: none;">
-          <div class="neon-custom-colors">
-            <div class="neon-preview" id="neon-preview"></div>
-            <div class="rgb-sliders">
-              <div class="rgb-slider">
-                <span>R</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}" id="neon-r-slider">
-                <span id="neon-r-value">${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}</span>
-              </div>
-              <div class="rgb-slider">
-                <span>G</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}" id="neon-g-slider">
-                <span id="neon-g-value">${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}</span>
-              </div>
-              <div class="rgb-slider">
-                <span>B</span>
-                <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}" id="neon-b-slider">
-                <span id="neon-b-value">${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}</span>
-              </div>
-            </div>
-            <button class="apply-color-btn" id="apply-neon-custom">Appliquer</button>
-          </div>
-        </div>
-      </div>
-    `);
-    
-    // Variable pour suivre la couleur de néon sélectionnée
-    let selectedNeonRGB = vehicleData.neonColor ? [...vehicleData.neonColor] : [255, 0, 255];
-    
-    // Mettre à jour la couleur active des néons
-    if (vehicleData.neonColor) {
-      const r = vehicleData.neonColor[0];
-      const g = vehicleData.neonColor[1];
-      const b = vehicleData.neonColor[2];
-      
-      // Sélectionner la couleur prédéfinie si elle correspond
-      $(`.neon-color`).each(function() {
-        const rgb = $(this).data('rgb').split(',');
-        if (parseInt(rgb[0]) === r && parseInt(rgb[1]) === g && parseInt(rgb[2]) === b) {
-          $(this).addClass('active');
-        }
-      });
-      
-      // Mettre à jour l'aperçu de couleur personnalisée
-      $('#neon-preview').css('background-color', `rgb(${r},${g},${b})`);
-    } else {
-      // Couleur par défaut (rose)
-      $('#neon-preview').css('background-color', 'rgb(255,0,255)');
-    }
-    
-    // Gestionnaires d'événements
-    
-    // Toggle principal des néons
-    $("#neon-main-toggle").on("click", function() {
-      const isActive = $(this).hasClass("active");
-      if (isActive) {
-        $(this).removeClass("active");
-        applyModification("neons", 0);
-        showNotification("Néons désactivés");
-      } else {
-        $(this).addClass("active");
-        applyModification("neons", 1);
-        showNotification("Néons activés");
-      }
-    });
-    
-    // Gestion des positions de néons
-    $(".neon-positions .extra-toggle-btn").on("click", function() {
-      const isActive = $(this).hasClass("active");
-      const position = parseInt($(this).data("position"));
-      
-      if (isActive) {
-        $(this).removeClass("active");
-        applyModification("neonPosition", 0, position);
-      } else {
-        $(this).addClass("active");
-        applyModification("neonPosition", 1, position);
-        
-        // Activer les néons si pas déjà actifs
-        if (!$("#neon-main-toggle").hasClass("active")) {
-          $("#neon-main-toggle").addClass("active");
-          applyModification("neons", 1);
-        }
-      }
-    });
-    
-    // Gestionnaires d'événements pour les onglets
-    $(".color-tab[data-target='neon']").on("click", function() {
-      const tabType = $(this).data("tab");
-      
-      // Mettre à jour les onglets
-      $(".color-tab[data-target='neon']").removeClass("active");
-      $(this).addClass("active");
-      
-      // Afficher le contenu correspondant
-      if (tabType === "simple") {
-        $("#neon-simple-content").show();
-        $("#neon-custom-content").hide();
-      } else {
-        // Suite de la fonction generateNeonSection
-      $("#neon-simple-content").hide();
-      $("#neon-custom-content").show();
-    }
-  });
-  
-  // Sélection des couleurs prédéfinies - MODIFIÉ POUR APPLICATION AUTOMATIQUE
-  $(".neon-color").on("click", function() {
-    $(".neon-color").removeClass("selected active");
-    $(this).addClass("selected active");
-    
-    const rgb = $(this).data("rgb").split(',');
-    selectedNeonRGB = [parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])];
-    
-    // Appliquer immédiatement la couleur
-    applyModification("neonColor", null, selectedNeonRGB);
-    
-    // Mettre à jour l'interface
-    $("#neon-preview").css("background-color", `rgb(${selectedNeonRGB[0]},${selectedNeonRGB[1]},${selectedNeonRGB[2]})`);
-    
-    // Mettre à jour les sliders
-    $("#neon-r-slider").val(selectedNeonRGB[0]);
-    $("#neon-g-slider").val(selectedNeonRGB[1]);
-    $("#neon-b-slider").val(selectedNeonRGB[2]);
-    
-    // Mettre à jour les valeurs affichées
-    $("#neon-r-value").text(selectedNeonRGB[0]);
-    $("#neon-g-value").text(selectedNeonRGB[1]);
-    $("#neon-b-value").text(selectedNeonRGB[2]);
-    
-    // Activer les néons si pas déjà actifs
-    if (!$("#neon-main-toggle").hasClass("active")) {
-      $("#neon-main-toggle").addClass("active");
-      applyModification("neons", 1);
-    }
-    
-    // Notification
-    const colorName = $(this).find("span").text();
-    showNotification(`Couleur de néon: ${colorName}`);
-  });
-  
-  // Garder le bouton d'application simple pour compatibilité
-  $("#apply-neon-simple").on("click", function() {
-    if (selectedNeonRGB) {
-      // Appliquer la couleur
-      applyModification("neonColor", null, selectedNeonRGB);
-      
-      // Notification
-      const colorName = $(".neon-color.selected span").text();
-      showNotification(`Couleur de néon: ${colorName}`);
-    }
-  });
-  
-  // Mise à jour en direct des sliders RGB
-  $("#neon-r-slider, #neon-g-slider, #neon-b-slider").on("input", function() {
-    const r = parseInt($("#neon-r-slider").val());
-    const g = parseInt($("#neon-g-slider").val());
-    const b = parseInt($("#neon-b-slider").val());
-    
-    // Mettre à jour les valeurs et l'aperçu
-    $("#neon-r-value").text(r);
-    $("#neon-g-value").text(g);
-    $("#neon-b-value").text(b);
-    $("#neon-preview").css("background-color", `rgb(${r},${g},${b})`);
-    
-    // Stocker les valeurs actuelles
-    selectedNeonRGB = [r, g, b];
-    
-    // Appliquer la couleur après un petit délai
-    clearTimeout(window.neonColorTimeout);
-    window.neonColorTimeout = setTimeout(() => {
-      applyModification("neonColor", null, [r, g, b]);
-      
-      // Activer les néons si nécessaire
-      if (!$("#neon-main-toggle").hasClass("active")) {
-        $("#neon-main-toggle").addClass("active");
-        applyModification("neons", 1);
-      }
-    }, 300);
-  });
-
-  // Appliquer la couleur personnalisée
-  $("#apply-neon-custom").on("click", function() {
-    // Appliquer la couleur
-    applyModification("neonColor", null, selectedNeonRGB);
-    
-    // Désélectionner les couleurs prédéfinies et réinitialiser la sélection active
-    $(".neon-color").removeClass("active selected");
-    
-    // Trouver si une couleur prédéfinie correspond
-    let matchFound = false;
-    $(`.neon-color`).each(function() {
-      const rgb = $(this).data('rgb').split(',');
-      if (parseInt(rgb[0]) === selectedNeonRGB[0] && 
-          parseInt(rgb[1]) === selectedNeonRGB[1] && 
-          parseInt(rgb[2]) === selectedNeonRGB[2]) {
-        $(this).addClass('active');
-        matchFound = true;
-      }
-    });
-    
-    // Activer les néons si pas déjà actifs
-    if (!$("#neon-main-toggle").hasClass("active")) {
-      $("#neon-main-toggle").addClass("active");
-      applyModification("neons", 1);
-    }
-    
-    // Notification
-    showNotification(`Couleur de néon RGB(${selectedNeonRGB[0]}, ${selectedNeonRGB[1]}, ${selectedNeonRGB[2]}) appliquée`);
-  });
-}
-
 
 function setupColorPickers() {
     ["primary", "secondary"].forEach(type => {
@@ -2010,23 +958,48 @@ function setupColorPickers() {
 }
 
 
-function setupColorExpandButtons() {
-  $(".color-expand-btn").off('click').on("click", function() {
-      const section = $(this).closest(".color-section");
-      const content = section.find(".color-content, .color-tabs");
-      const isExpanded = section.attr("data-expanded") === "true";
-      
-      if (isExpanded) {
-          content.slideUp(200);
-          section.attr("data-expanded", "false");
-          $(this).html('<i class="fas fa-chevron-down"></i>');
-      } else {
-          content.slideDown(200);
-          section.attr("data-expanded", "true");
-          $(this).html('<i class="fas fa-chevron-up"></i>');
-      }
-  });
+
+
+function initializeColorMenu() {
+  // Détecter le type de peinture actuel
+  const currentPaintType = vehicleData.paintType !== undefined ? parseInt(vehicleData.paintType) : 0;
+  
+  // Sélectionner le bon type de peinture dans l'interface
+  $(`.paint-type-item[data-type="${currentPaintType}"]`).addClass('active');
+  
+  // Gérer la visibilité de la section nacrée
+  if (currentPaintType === 1 || currentPaintType === 2) {
+      $("#pearl-section").show();
+  } else {
+      $("#pearl-section").hide();
+  }
+  
+  // Générer les palettes de couleurs
+  generateColorPalette("primary", vehicleData.primaryColor, currentPaintType);
+  generateColorPalette("secondary", vehicleData.secondaryColor, currentPaintType);
+  generateColorPalette("pearl", vehicleData.pearlColor, 1); // Force type métallique pour nacrée
+  
+  console.log("Menu des couleurs initialisé avec type de peinture:", currentPaintType);
 }
+
+$("#color-btn").click(() => {
+  // Masquer tous les conteneurs
+  $(".modif").hide();
+  // Afficher le conteneur des couleurs
+  $("#color-container").show();
+  // Mettre à jour la classe active
+  $(".liste > div").removeClass("active");
+  $("#color-btn").addClass("active");
+  // Générer l'UI des couleurs
+  generateColorUI();
+  // Envoyer le changement de catégorie
+  $.post(
+      "https://custom/changeCategory",
+      JSON.stringify({
+          category: "color"
+      })
+  );
+});
   
   function setupColorTabs() {
     $(".color-tab").off('click').on("click", function() {
@@ -2073,6 +1046,9 @@ function setupColorExpandButtons() {
     setupColorTabs();
     setupColorExpandButtons();
   }
+
+
+
 
   function setLiveColorPreview(type) {
     // Ajouter un div d'aperçu s'il n'existe pas déjà
@@ -2239,13 +1215,438 @@ function setupColorExpandButtons() {
     $(`#${type}-hue-slider`).val(hsb[0]);
   }
   
+// Assurons-nous que vehicleColors est bien défini globalement
+window.vehicleColors = {
+  // Couleurs standards/classiques (type 0)
+  standard: [
+      { id: 0, name: "Noir", color: "#0d1116" },
+      { id: 1, name: "Graphite", color: "#1c1d21" },
+      { id: 2, name: "Noir Acier", color: "#32383d" },
+      { id: 3, name: "Gris Foncé", color: "#454b4f" },
+      { id: 4, name: "Gris Argenté", color: "#999da0" },
+      { id: 5, name: "Gris Acier", color: "#c2c4c6" },
+      { id: 6, name: "Argenté", color: "#979a97" },
+      { id: 7, name: "Bleu Argenté", color: "#637380" },
+      { id: 8, name: "Gris Roulé", color: "#63625c" },
+      { id: 9, name: "Argenté Ombré", color: "#3c3f47" },
+      { id: 10, name: "Pierre", color: "#444e54" },
+      { id: 11, name: "Noir Minuit", color: "#1f2226" },
+      { id: 12, name: "Gris Anthracite", color: "#13181f" },
+      { id: 13, name: "Noir Réplica", color: "#26282a" },
+      { id: 14, name: "Carbone", color: "#1e2429" },
+      { id: 15, name: "Bleu Graphite", color: "#31383f" },
+      { id: 16, name: "Rouge Foncé", color: "#7a0101" },
+      { id: 17, name: "Rouge Cabernet", color: "#620022" },
+      { id: 18, name: "Rouge Vin", color: "#320000" },
+      { id: 19, name: "Rose Pastel", color: "#ba676f" },
+      { id: 20, name: "Rouge Saumon", color: "#ed7176" },
+      { id: 21, name: "Rouge Vermillon", color: "#cf1f21" },
+      { id: 22, name: "Orange", color: "#f44d00" },
+      { id: 23, name: "Rouge Clair", color: "#B22222" },
+      { id: 24, name: "Jaune Crème", color: "#fde7a9" },
+      { id: 25, name: "Jaune Citron", color: "#ffc91f" },
+      { id: 26, name: "Jaune", color: "#fcf64a" },
+      { id: 27, name: "Lime", color: "#84c365" },
+      { id: 28, name: "Vert Feuille", color: "#4e6443" },
+      { id: 29, name: "Racing Green", color: "#132428" },
+      { id: 30, name: "Olive", color: "#6d6c3c" },
+      { id: 31, name: "Vert Forêt", color: "#222e46" },
+      { id: 32, name: "Vert Prairie", color: "#6f8c51" },
+      { id: 33, name: "Vert Racing", color: "#66b81f" },
+      { id: 34, name: "Vert Marin", color: "#22383e" },
+      { id: 35, name: "Sarcelle Foncé", color: "#1f5a3a" },
+      { id: 36, name: "Turquoise", color: "#509079" },
+      { id: 37, name: "Bleu Mer", color: "#1d5a76" },
+      { id: 38, name: "Bleu Marine", color: "#112552" },
+      { id: 39, name: "Bleu Horizon", color: "#1a1d24" },
+      { id: 40, name: "Ultra Bleu", color: "#253351" },
+      { id: 41, name: "Bleu Saxo", color: "#1c3551" },
+      { id: 42, name: "Bleu Galaxie", color: "#151921" },
+      { id: 43, name: "Bleu Diamant", color: "#193e6f" },
+      { id: 44, name: "Surf Bleu", color: "#5c889e" },
+      { id: 45, name: "Bleu Nautique", color: "#525661" },
+      { id: 46, name: "Bleu Délavé", color: "#8ea8b0" },
+      { id: 47, name: "Bleue Schafter", color: "#202c3b" },
+      { id: 48, name: "Mauve Spinnaker", color: "#635f60" },
+      { id: 49, name: "Violet Pourpre", color: "#260C3A" },
+      { id: 50, name: "Violet Minuit", color: "#2c0a57" },
+      { id: 51, name: "Violet Schafter", color: "#161629" },
+      { id: 52, name: "Violet Clair", color: "#483B63" },
+      { id: 53, name: "Blanc Crème", color: "#E5E5E5" },
+      { id: 54, name: "Crème Glacée", color: "#FBFCF4" },
+      { id: 55, name: "Blanc Neige", color: "#FFFFFF" },
+      { id: 56, name: "Blanc Frost", color: "#F2F2F2" },
+      { id: 57, name: "Beige Hêtre", color: "#c1ab6c" },
+      { id: 58, name: "Brun Van", color: "#5b391b" },
+      { id: 59, name: "Beige Platane", color: "#6b6b6b" },
+      { id: 60, name: "Brun Terre", color: "#3b2e2a" },
+      { id: 61, name: "Brun Désert", color: "#7b6c5a" },
+      { id: 62, name: "Brun Noisette", color: "#5a4d41" },
+      { id: 63, name: "Beige Pierre", color: "#d0c0b1" }
+  ],
+  // Couleurs métalliques (type 1)
+  metallic: [
+      { id: 64, name: "Métal Noir", color: "#0d1116" },
+      { id: 65, name: "Métal Graphite", color: "#1c1d21" },
+      { id: 66, name: "Métal Noir Acier", color: "#32383d" },
+      { id: 67, name: "Métal Gris Foncé", color: "#454b4f" },
+      { id: 68, name: "Métal Gris Argenté", color: "#999da0" },
+      { id: 69, name: "Métal Gris Acier", color: "#c2c4c6" },
+      { id: 70, name: "Métal Argenté", color: "#979a97" },
+      { id: 71, name: "Métal Bleu Argenté", color: "#637380" },
+      { id: 72, name: "Métal Gris Roulé", color: "#63625c" },
+      { id: 73, name: "Métal Argenté Ombré", color: "#3c3f47" },
+      { id: 74, name: "Métal Pierre", color: "#444e54" },
+      { id: 75, name: "Métal Noir Minuit", color: "#1f2226" },
+      { id: 76, name: "Métal Gris Anthracite", color: "#13181f" },
+      { id: 77, name: "Métal Noir Réplica", color: "#26282a" },
+      { id: 78, name: "Métal Carbone", color: "#1e2429" },
+      { id: 79, name: "Métal Bleu Graphite", color: "#31383f" },
+      { id: 80, name: "Métal Rouge Foncé", color: "#7a0101" },
+      { id: 81, name: "Métal Rouge Cabernet", color: "#620022" },
+      { id: 82, name: "Métal Rouge Vin", color: "#320000" },
+      { id: 83, name: "Métal Rose Pastel", color: "#ba676f" },
+      { id: 84, name: "Métal Rouge Saumon", color: "#ed7176" },
+      { id: 85, name: "Métal Rouge Vermillon", color: "#cf1f21" },
+      { id: 86, name: "Métal Orange", color: "#f44d00" },
+      { id: 87, name: "Métal Rouge Clair", color: "#B22222" },
+      { id: 88, name: "Métal Jaune Crème", color: "#fde7a9" },
+      { id: 89, name: "Métal Jaune Citron", color: "#ffc91f" },
+      { id: 90, name: "Métal Jaune", color: "#fcf64a" },
+      { id: 91, name: "Métal Lime", color: "#84c365" },
+      { id: 92, name: "Métal Vert Feuille", color: "#4e6443" },
+      { id: 93, name: "Métal Racing Green", color: "#132428" },
+      { id: 94, name: "Métal Olive", color: "#6d6c3c" },
+      { id: 95, name: "Métal Vert Forêt", color: "#222e46" },
+      { id: 96, name: "Métal Vert Prairie", color: "#6f8c51" },
+      { id: 97, name: "Métal Vert Racing", color: "#66b81f" },
+      { id: 98, name: "Métal Vert Marin", color: "#22383e" },
+      { id: 99, name: "Métal Sarcelle Foncé", color: "#1f5a3a" },
+      { id: 100, name: "Métal Turquoise", color: "#509079" },
+      { id: 101, name: "Métal Bleu Mer", color: "#1d5a76" },
+      { id: 102, name: "Métal Bleu Marine", color: "#112552" },
+      { id: 103, name: "Métal Bleu Horizon", color: "#1a1d24" },
+      { id: 104, name: "Métal Ultra Bleu", color: "#253351" },
+      { id: 105, name: "Métal Bleu Saxo", color: "#1c3551" },
+      { id: 106, name: "Métal Bleu Galaxie", color: "#151921" },
+      { id: 107, name: "Métal Bleu Diamant", color: "#193e6f" },
+      { id: 108, name: "Métal Surf Bleu", color: "#5c889e" },
+      { id: 109, name: "Métal Bleu Nautique", color: "#525661" },
+      { id: 110, name: "Métal Bleu Délavé", color: "#8ea8b0" },
+      { id: 111, name: "Métal Bleue Schafter", color: "#202c3b" },
+      { id: 112, name: "Métal Mauve Spinnaker", color: "#635f60" },
+      { id: 113, name: "Métal Violet Pourpre", color: "#260C3A" },
+      { id: 114, name: "Métal Violet Minuit", color: "#2c0a57" },
+      { id: 115, name: "Métal Violet Schafter", color: "#161629" },
+      { id: 116, name: "Métal Violet Clair", color: "#483B63" },
+      { id: 117, name: "Métal Blanc Crème", color: "#E5E5E5" },
+      { id: 118, name: "Métal Crème Glacée", color: "#FBFCF4" },
+      { id: 119, name: "Métal Blanc Neige", color: "#FFFFFF" },
+      { id: 120, name: "Métal Blanc Frost", color: "#F2F2F2" },
+      { id: 121, name: "Métal Beige Hêtre", color: "#c1ab6c" },
+      { id: 122, name: "Métal Brun Van", color: "#5b391b" },
+      { id: 123, name: "Métal Beige Platane", color: "#6b6b6b" },
+      { id: 124, name: "Métal Brun Terre", color: "#3b2e2a" },
+      { id: 125, name: "Métal Brun Désert", color: "#7b6c5a" },
+      { id: 126, name: "Métal Brun Noisette", color: "#5a4d41" },
+      { id: 127, name: "Métal Beige Pierre", color: "#d0c0b1" }
+  ],
+  // Couleurs mate (type 3)
+  matte: [
+      { id: 128, name: "Mat Noir", color: "#0d1116" },
+      { id: 129, name: "Mat Gris", color: "#32383d" },
+      { id: 130, name: "Mat Gris Clair", color: "#999da0" },
+      { id: 131, name: "Mat Blanc Glacé", color: "#FFFFFF" },
+      { id: 132, name: "Mat Bleu", color: "#1d5a76" },
+      { id: 133, name: "Mat Bleu Foncé", color: "#112552" },
+      { id: 134, name: "Mat Violet Minuit", color: "#2c0a57" },
+      { id: 135, name: "Mat Violet", color: "#483B63" },
+      { id: 136, name: "Mat Rouge", color: "#cf1f21" },
+      { id: 137, name: "Mat Rouge Foncé", color: "#7a0101" },
+      { id: 138, name: "Mat Orange", color: "#f44d00" },
+      { id: 139, name: "Mat Jaune", color: "#fcf64a" },
+      { id: 140, name: "Mat Lime", color: "#84c365" },
+      { id: 141, name: "Mat Vert", color: "#4e6443" },
+      { id: 142, name: "Mat Vert Forêt", color: "#222e46" },
+      { id: 143, name: "Mat Beige", color: "#c1ab6c" },
+      { id: 144, name: "Mat Brun Clair", color: "#7b6c5a" },
+      { id: 145, name: "Mat Brun Foncé", color: "#3b2e2a" },
+      { id: 146, name: "Mat Olive", color: "#6d6c3c" },
+      { id: 147, name: "Mat Tan", color: "#d0c0b1" },
+      { id: 148, name: "Mat Vert Armée", color: "#4d5d44" }
+  ],
+  // Couleurs métal (type 2)
+  metal: [
+      { id: 149, name: "Brossé Acier", color: "#999da0" },
+      { id: 150, name: "Brossé Noir Acier", color: "#1c1d21" },
+      { id: 151, name: "Brossé Aluminium", color: "#c2c4c6" },
+      { id: 152, name: "Chrome", color: "#e6e6e6" },
+      { id: 153, name: "Or", color: "#d4af37" },
+      { id: 154, name: "Bronze", color: "#cd7f32" },
+      { id: 155, name: "Or Rosé", color: "#e5c1a7" },
+      { id: 156, name: "Pur Gold", color: "#af9f6f" },
+      { id: 157, name: "Brossé Or", color: "#d4af37" },
+      { id: 158, name: "Argent Liquide", color: "#e6e6e6" }
+  ],
+  // Couleurs chameleon (type 4)
+  chameleon: [
+      { id: 159, name: "Chromatique", color: "#e6e6e6" }
+  ]
+};
 
-// Fonction pour générer l'interface de couleurs avec le nouveau design
+// Variables globales pour les couleurs sélectionnées
+window.selectedPrimaryColor = null;
+window.selectedSecondaryColor = null;
+window.selectedPearlColor = null;
+
+// Fonction optimisée pour générer la palette de couleurs
+function generateColorPalette(type, activeColorId, paintType) {
+  console.log(`Génération palette ${type} avec paintType=${paintType} et activeColorId=${activeColorId}`);
+  
+  const grid = $(`.${type}-colors`);
+  grid.empty();
+  
+  // Déterminer quelles couleurs afficher en fonction du type de peinture
+  const paintTypeInt = parseInt(paintType || 0);
+  let colorsToUse = [];
+  
+  // Utiliser la structure window.vehicleColors
+  switch(paintTypeInt) {
+      case 0: // Normal
+          colorsToUse = window.vehicleColors.standard;
+          break;
+      case 1: // Métallique
+          colorsToUse = window.vehicleColors.metallic;
+          break;
+      case 2: // Nacré
+          colorsToUse = window.vehicleColors.metallic;
+          break;
+      case 3: // Mat
+          colorsToUse = window.vehicleColors.matte;
+          break;
+      case 4: // Metal/Brossé
+          colorsToUse = window.vehicleColors.metal;
+          break;
+      case 5: // Chrome
+          colorsToUse = [{ id: 152, name: "Chrome", color: "#e6e6e6" }];
+          break;
+      default:
+          colorsToUse = window.vehicleColors.standard;
+  }
+  
+  console.log(`Affichage de ${colorsToUse.length} couleurs pour le type ${type} (paintType: ${paintTypeInt})`);
+  
+  // Générer les carrés de couleur
+  colorsToUse.forEach(color => {
+      const colorItem = $(`
+          <div class="color-item" 
+              style="background-color: ${color.color}" 
+              data-color="${color.id}" 
+              data-type="${type}" 
+              title="${color.name}"></div>
+      `);
+      
+      // Déterminer si la couleur est active
+      if (activeColorId !== undefined && parseInt(color.id) === parseInt(activeColorId)) {
+          colorItem.addClass("active");
+      }
+      
+      // Gestionnaire d'événements pour la sélection de couleur
+      colorItem.on("click", function() {
+          $(`.color-item[data-type='${type}']`).removeClass("active selected");
+          $(this).addClass("active selected");
+          
+          // Stockage de la couleur sélectionnée pour une application ultérieure
+          const colorId = parseInt($(this).data("color"));
+          
+          if (type === "primary") {
+              window.selectedPrimaryColor = colorId;
+          } else if (type === "secondary") {
+              window.selectedSecondaryColor = colorId;
+          } else if (type === "pearl") {
+              window.selectedPearlColor = colorId;
+          }
+          
+          // Application immédiate de la couleur
+          const colorType = type === "primary" ? "primaryColor" : 
+                          type === "secondary" ? "secondaryColor" : "pearlColor";
+          applyModification(colorType, colorId);
+          
+          // Notification
+          showNotification(`Couleur ${color.name} appliquée`);
+      });
+      
+      grid.append(colorItem);
+  });
+}
+
+// Fonction pour générer la section de peinture
+function generatePaintSection() {
+  const paintSection = $("#paint-section");
+  paintSection.empty();
+  
+  // Récupérer les valeurs actuelles du véhicule
+  const currentPrimaryColor = vehicleData.primaryColor;
+  const currentSecondaryColor = vehicleData.secondaryColor;
+  const currentPearlColor = vehicleData.pearlColor;
+  const currentPaintType = vehicleData.paintType !== undefined ? parseInt(vehicleData.paintType) : 0;
+  
+  // Initialiser les variables globales
+  window.selectedPrimaryColor = currentPrimaryColor;
+  window.selectedSecondaryColor = currentSecondaryColor;
+  window.selectedPearlColor = currentPearlColor;
+  
+  // Section type de peinture
+  paintSection.append(`
+    <div class="color-section">
+      <div class="color-section-header">
+        <div class="color-title">Type de peinture</div>
+        <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
+      </div>
+      
+      <div class="color-content" id="paint-type-content">
+        <div class="paint-type-grid">
+          <div class="paint-type-item ${currentPaintType === 0 ? 'active' : ''}" data-type="0">
+            <div class="paint-type-name">Normal</div>
+            <div class="paint-type-price">$500</div>
+          </div>
+          <div class="paint-type-item ${currentPaintType === 1 ? 'active' : ''}" data-type="1">
+            <div class="paint-type-name">Métallique</div>
+            <div class="paint-type-price">$700</div>
+          </div>
+          <div class="paint-type-item ${currentPaintType === 2 ? 'active' : ''}" data-type="2">
+            <div class="paint-type-name">Nacré</div>
+            <div class="paint-type-price">$1000</div>
+          </div>
+          <div class="paint-type-item ${currentPaintType === 3 ? 'active' : ''}" data-type="3">
+            <div class="paint-type-name">Mat</div>
+            <div class="paint-type-price">$900</div>
+          </div>
+          <div class="paint-type-item ${currentPaintType === 4 ? 'active' : ''}" data-type="4">
+            <div class="paint-type-name">Métal brossé</div>
+            <div class="paint-type-price">$1200</div>
+          </div>
+          <div class="paint-type-item ${currentPaintType === 5 ? 'active' : ''}" data-type="5">
+            <div class="paint-type-name">Chrome</div>
+            <div class="paint-type-price">$1500</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+  
+  // Section couleur primaire
+  paintSection.append(`
+    <div class="color-section">
+      <div class="color-section-header">
+        <div class="color-title">Couleur primaire</div>
+        <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
+      </div>
+      
+      <div class="color-content" id="primary-content">
+        <div class="color-grid primary-colors"></div>
+      </div>
+    </div>
+  `);
+  
+  // Section couleur secondaire
+  paintSection.append(`
+    <div class="color-section">
+      <div class="color-section-header">
+        <div class="color-title">Couleur secondaire</div>
+        <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
+      </div>
+      
+      <div class="color-content" id="secondary-content">
+        <div class="color-grid secondary-colors"></div>
+      </div>
+    </div>
+  `);
+  
+  // Section couleur nacrée (seulement visible si type est métallique ou nacré)
+  const showPearl = (currentPaintType === 1 || currentPaintType === 2);
+  paintSection.append(`
+    <div class="color-section" id="pearl-section" style="${showPearl ? '' : 'display: none;'}">
+      <div class="color-section-header">
+        <div class="color-title">Couleur nacrée</div>
+        <div class="color-expand-btn"><i class="fas fa-chevron-up"></i></div>
+      </div>
+      
+      <div class="color-content" id="pearl-content">
+        <div class="color-grid pearl-colors"></div>
+      </div>
+    </div>
+  `);
+  
+  // Générer les palettes de couleurs avec le type de peinture actuel
+  console.log("Génération initiale des palettes avec currentPaintType =", currentPaintType);
+  generateColorPalette("primary", currentPrimaryColor, currentPaintType);
+  generateColorPalette("secondary", currentSecondaryColor, currentPaintType);
+  
+  // La couleur nacrée utilise toujours les couleurs standard/métalliques
+  if (showPearl) {
+      generateColorPalette("pearl", currentPearlColor, 1); // Force type métallique pour nacrée
+  }
+  
+  // Gestionnaire pour les types de peinture
+  $(".paint-type-item").off('click').on("click", function() {
+      $(".paint-type-item").removeClass("active");
+      $(this).addClass("active");
+      const paintType = parseInt($(this).data("type"));
+      
+      // Gérer la visibilité de la section nacrée
+      if (paintType === 1 || paintType === 2) {
+          $("#pearl-section").slideDown(200);
+          generateColorPalette("pearl", window.selectedPearlColor || currentPearlColor, 1);
+      } else {
+          $("#pearl-section").slideUp(200);
+      }
+      
+      // Appliquer le type de peinture
+      console.log("Changement de type de peinture vers", paintType);
+      applyModification("paintType", paintType);
+      
+      // Mettre à jour les palettes de couleurs selon le type
+      generateColorPalette("primary", window.selectedPrimaryColor || currentPrimaryColor, paintType);
+      generateColorPalette("secondary", window.selectedSecondaryColor || currentSecondaryColor, paintType);
+      
+      // Message informatif
+      const paintTypeName = $(this).find('.paint-type-name').text();
+      showNotification(`Type de peinture: ${paintTypeName}`);
+  });
+  
+  // Par défaut, toutes les sections sont ouvertes
+  $(".color-section").attr("data-expanded", "true");
+  
+  // Configurer les boutons d'expansion
+  setupColorExpandButtons();
+}
+
+// Fonction pour configurer les boutons d'expansion
+function setupColorExpandButtons() {
+  $(".color-expand-btn").off('click').on("click", function() {
+      const section = $(this).closest(".color-section");
+      const content = section.find(".color-content");
+      const isExpanded = section.attr("data-expanded") === "true";
+      
+      if (isExpanded) {
+          content.slideUp(200);
+          section.attr("data-expanded", "false");
+          $(this).html('<i class="fas fa-chevron-down"></i>');
+      } else {
+          content.slideDown(200);
+          section.attr("data-expanded", "true");
+          $(this).html('<i class="fas fa-chevron-up"></i>');
+      }
+  });
+}
+
+// Fonction UI de couleurs principale
 function generateColorUI() {
   const colorContainer = $("#color-container");
   colorContainer.empty();
   
-  // Barre d'onglets supérieure pour les différentes sections (peinture, phares, etc.)
+  // Barre d'onglets supérieure pour les différentes sections
   colorContainer.append(`
       <div class="top-icons-bar">
           <div class="icon-btn active" data-section="paint">
@@ -2275,9 +1676,11 @@ function generateColorUI() {
   
   // Générer le contenu des sections
   generatePaintSection();
-  generateHeadlightsSection();
-  generateNeonSection();
-  generateWindowsSection();
+  
+  // Si les autres fonctions existent, les appeler aussi
+  if (typeof generateHeadlightsSection === 'function') generateHeadlightsSection();
+  if (typeof generateNeonSection === 'function') generateNeonSection();
+  if (typeof generateWindowsSection === 'function') generateWindowsSection();
   
   // Gestionnaire d'événements pour les onglets supérieurs
   $(".icon-btn").off('click').on("click", function() {
@@ -2289,6 +1692,496 @@ function generateColorUI() {
       $(`#${section}-section`).show();
   });
 }
+
+
+// Bouton pour ouvrir le menu des couleurs (suite)
+$("#color-btn").click(() => {
+  // Masquer tous les conteneurs
+  $(".modif").hide();
+  // Afficher le conteneur des couleurs
+  $("#color-container").show();
+  // Mettre à jour la classe active
+  $(".liste > div").removeClass("active");
+  $("#color-btn").addClass("active");
+  // Générer l'UI des couleurs
+  generateColorUI();
+  // Envoyer le changement de catégorie
+  $.post(
+      "https://custom/changeCategory",
+      JSON.stringify({
+          category: "color"
+      })
+  );
+});
+
+// Fonction pour générer la section des phares
+function generateHeadlightsSection() {
+  const headlightsSection = $("#headlights-section");
+  headlightsSection.empty();
+  
+  // Section xenon
+  headlightsSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Phares Xenon</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="extra-toggle">
+                  <div class="extra-toggle-btn ${vehicleData.xenonEnabled ? 'active' : ''}" id="xenon-main-toggle"></div>
+                  <div class="extra-toggle-label">Activer les phares xenon</div>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Couleurs des phares xenon
+  headlightsSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Couleur des phares</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="xenon-colors-grid">
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === -1 ? 'active' : ''}" data-color="-1" style="background-color: #ffffff"><span>Défaut</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 0 ? 'active' : ''}" data-color="0" style="background-color: #ffffff"><span>Blanc</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 1 ? 'active' : ''}" data-color="1" style="background-color: #0000ff"><span>Bleu</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 2 ? 'active' : ''}" data-color="2" style="background-color: #0080ff"><span>Bleu E.</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 3 ? 'active' : ''}" data-color="3" style="background-color: #00ff80"><span>Vert M.</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 4 ? 'active' : ''}" data-color="4" style="background-color: #80ff00"><span>Vert L.</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 5 ? 'active' : ''}" data-color="5" style="background-color: #ffff00"><span>Jaune</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 6 ? 'active' : ''}" data-color="6" style="background-color: #ffc800"><span>Or</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 7 ? 'active' : ''}" data-color="7" style="background-color: #ff8000"><span>Orange</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 8 ? 'active' : ''}" data-color="8" style="background-color: #ff0000"><span>Rouge</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 9 ? 'active' : ''}" data-color="9" style="background-color: #ff00ff"><span>Rose</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 10 ? 'active' : ''}" data-color="10" style="background-color: #8000ff"><span>Violet</span></div>
+                  <div class="color-item xenon-color ${vehicleData.xenonColor === 11 ? 'active' : ''}" data-color="11" style="background-color: #000000"><span>Noir</span></div>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Gestionnaires d'événements
+  $("#xenon-main-toggle").on("click", function() {
+      const isActive = $(this).hasClass("active");
+      if (isActive) {
+          $(this).removeClass("active");
+          applyModification("xenon", 0);
+          showNotification("Phares xenon désactivés");
+      } else {
+          $(this).addClass("active");
+          applyModification("xenon", 1);
+          showNotification("Phares xenon activés");
+      }
+  });
+  
+  $(".xenon-color").on("click", function() {
+      $(".xenon-color").removeClass("active selected");
+      $(this).addClass("active selected");
+      
+      const colorId = parseInt($(this).data("color"));
+      
+      // Appliquer la couleur
+      applyModification("xenonColor", colorId);
+      
+      // Activer les xenons si pas déjà actifs
+      if (!$("#xenon-main-toggle").hasClass("active")) {
+          $("#xenon-main-toggle").addClass("active");
+          applyModification("xenon", 1);
+      }
+      
+      // Notification
+      const colorName = $(this).find("span").text();
+      showNotification(`Couleur de xenon: ${colorName}`);
+  });
+}
+
+// Fonction pour générer la section des vitres
+function generateWindowsSection() {
+  const windowsSection = $("#windows-section");
+  windowsSection.empty();
+  
+  // Teinte des vitres
+  windowsSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Teinte des vitres</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="tint-options-grid">
+                  <div class="tint-option ${vehicleData.windowTint === -1 ? 'active' : ''}" data-tint-id="-1">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Stock</div>
+                          <div class="tint-price">$0</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 0 ? 'active' : ''}" data-tint-id="0">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Aucune</div>
+                          <div class="tint-price">$100</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 1 ? 'active' : ''}" data-tint-id="1">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.9)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Pure Black</div>
+                          <div class="tint-price">$500</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 2 ? 'active' : ''}" data-tint-id="2">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.75)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Dark Smoke</div>
+                          <div class="tint-price">$400</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 3 ? 'active' : ''}" data-tint-id="3">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.5)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Light Smoke</div>
+                          <div class="tint-price">$300</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 4 ? 'active' : ''}" data-tint-id="4">
+                      <div class="tint-preview" style="background-color: rgba(0, 0, 0, 0.85)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Limo</div>
+                          <div class="tint-price">$600</div>
+                      </div>
+                  </div>
+                  <div class="tint-option ${vehicleData.windowTint === 5 ? 'active' : ''}" data-tint-id="5">
+                      <div class="tint-preview" style="background-color: rgba(0, 100, 0, 0.5)"></div>
+                      <div class="tint-info">
+                          <div class="tint-name">Green</div>
+                          <div class="tint-price">$300</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Gestionnaires d'événements
+  $(".tint-option").on("click", function() {
+      $(".tint-option").removeClass("active selected");
+      $(this).addClass("active selected");
+      
+      const tintId = parseInt($(this).data("tint-id"));
+      
+      // Appliquer la teinte
+      applyModification("windowTint", tintId);
+      
+      // Notification
+      const tintName = $(this).find(".tint-name").text();
+      showNotification(`Teinte des vitres: ${tintName}`);
+  });
+}
+
+// Fonction pour générer la section néons
+function generateNeonSection() {
+  const neonSection = $("#neon-section");
+  neonSection.empty();
+  
+  // Activer/désactiver les néons
+  neonSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Néons</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="extra-toggle">
+                  <div class="extra-toggle-btn ${vehicleData.neonsEnabled ? 'active' : ''}" id="neon-main-toggle"></div>
+                  <div class="extra-toggle-label">Activer les néons</div>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Position des néons
+  neonSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Position des néons</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="neon-positions">
+                  <div class="extra-toggle">
+                      <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[0] ? 'active' : ''}" data-position="0" id="neon-pos-0"></div>
+                      <div class="extra-toggle-label">Néon avant</div>
+                  </div>
+                  <div class="extra-toggle">
+                      <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[1] ? 'active' : ''}" data-position="1" id="neon-pos-1"></div>
+                      <div class="extra-toggle-label">Néon arrière</div>
+                  </div>
+                  <div class="extra-toggle">
+                      <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[2] ? 'active' : ''}" data-position="2" id="neon-pos-2"></div>
+                      <div class="extra-toggle-label">Néon gauche</div>
+                  </div>
+                  <div class="extra-toggle">
+                      <div class="extra-toggle-btn ${vehicleData.neonPositions && vehicleData.neonPositions[3] ? 'active' : ''}" data-position="3" id="neon-pos-3"></div>
+                      <div class="extra-toggle-label">Néon droite</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Couleur des néons
+  neonSection.append(`
+      <div class="color-section">
+          <div class="color-section-header">
+              <div class="color-title">Couleur des néons</div>
+          </div>
+          
+          <div class="color-content">
+              <div class="neon-colors-grid">
+                  <div class="color-item neon-color" data-rgb="255,255,255" style="background-color: rgb(255,255,255)"><span>Blanc</span></div>
+                  <div class="color-item neon-color" data-rgb="255,0,0" style="background-color: rgb(255,0,0)"><span>Rouge</span></div>
+                  <div class="color-item neon-color" data-rgb="0,255,0" style="background-color: rgb(0,255,0)"><span>Vert</span></div>
+                  <div class="color-item neon-color" data-rgb="0,0,255" style="background-color: rgb(0,0,255)"><span>Bleu</span></div>
+                  <div class="color-item neon-color" data-rgb="255,255,0" style="background-color: rgb(255,255,0)"><span>Jaune</span></div>
+                  <div class="color-item neon-color" data-rgb="0,255,255" style="background-color: rgb(0,255,255)"><span>Cyan</span></div>
+                  <div class="color-item neon-color" data-rgb="255,0,255" style="background-color: rgb(255,0,255)"><span>Rose</span></div>
+                  <div class="color-item neon-color" data-rgb="255,165,0" style="background-color: rgb(255,165,0)"><span>Orange</span></div>
+                  <div class="color-item neon-color" data-rgb="128,0,128" style="background-color: rgb(128,0,128)"><span>Violet</span></div>
+                  <div class="color-item neon-color" data-rgb="50,205,50" style="background-color: rgb(50,205,50)"><span>Lime</span></div>
+                  <div class="color-item neon-color" data-rgb="255,20,147" style="background-color: rgb(255,20,147)"><span>Fuschia</span></div>
+                  <div class="color-item neon-color" data-rgb="70,130,180" style="background-color: rgb(70,130,180)"><span>Azur</span></div>
+              </div>
+              
+              <div class="neon-custom-colors">
+                  <div class="neon-preview" id="neon-preview" style="background-color: rgb(${vehicleData.neonColor ? vehicleData.neonColor.join(',') : '255,0,255'})"></div>
+                  <div class="rgb-sliders">
+                      <div class="rgb-slider">
+                          <span>R</span>
+                          <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}" id="neon-r-slider">
+                          <span id="neon-r-value">${vehicleData.neonColor ? vehicleData.neonColor[0] : 255}</span>
+                      </div>
+                      <div class="rgb-slider">
+                          <span>G</span>
+                          <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}" id="neon-g-slider">
+                          <span id="neon-g-value">${vehicleData.neonColor ? vehicleData.neonColor[1] : 0}</span>
+                      </div>
+                      <div class="rgb-slider">
+                          <span>B</span>
+                          <input type="range" min="0" max="255" value="${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}" id="neon-b-slider">
+                          <span id="neon-b-value">${vehicleData.neonColor ? vehicleData.neonColor[2] : 255}</span>
+                      </div>
+                  </div>
+                  <button class="apply-color-btn" id="apply-neon-custom">Appliquer</button>
+              </div>
+          </div>
+      </div>
+  `);
+  
+  // Variable pour suivre la couleur de néon sélectionnée
+  window.selectedNeonRGB = vehicleData.neonColor ? [...vehicleData.neonColor] : [255, 0, 255];
+  
+  // Mettre à jour la couleur active des néons
+  if (vehicleData.neonColor) {
+      const r = vehicleData.neonColor[0];
+      const g = vehicleData.neonColor[1];
+      const b = vehicleData.neonColor[2];
+      
+      // Sélectionner la couleur prédéfinie si elle correspond
+      $(`.neon-color`).each(function() {
+          const rgb = $(this).data('rgb').split(',');
+          if (parseInt(rgb[0]) === r && parseInt(rgb[1]) === g && parseInt(rgb[2]) === b) {
+              $(this).addClass('active');
+          }
+      });
+  }
+  
+  // Gestionnaires d'événements
+  
+  // Toggle principal des néons
+  $("#neon-main-toggle").on("click", function() {
+      const isActive = $(this).hasClass("active");
+      if (isActive) {
+          $(this).removeClass("active");
+          applyModification("neons", 0);
+          showNotification("Néons désactivés");
+      } else {
+          $(this).addClass("active");
+          applyModification("neons", 1);
+          showNotification("Néons activés");
+      }
+  });
+  
+  // Gestion des positions de néons
+  $(".neon-positions .extra-toggle-btn").on("click", function() {
+      const isActive = $(this).hasClass("active");
+      const position = parseInt($(this).data("position"));
+      
+      if (isActive) {
+          $(this).removeClass("active");
+          applyModification("neonPosition", 0, position);
+      } else {
+          $(this).addClass("active");
+          applyModification("neonPosition", 1, position);
+          
+          // Activer les néons si pas déjà actifs
+          if (!$("#neon-main-toggle").hasClass("active")) {
+              $("#neon-main-toggle").addClass("active");
+              applyModification("neons", 1);
+          }
+      }
+  });
+  
+  // Sélection des couleurs prédéfinies
+  $(".neon-color").on("click", function() {
+      $(".neon-color").removeClass("active selected");
+      $(this).addClass("active selected");
+      
+      const rgb = $(this).data("rgb").split(',');
+      window.selectedNeonRGB = [parseInt(rgb[0]), parseInt(rgb[1]), parseInt(rgb[2])];
+      
+      // Appliquer immédiatement la couleur
+      applyModification("neonColor", null, window.selectedNeonRGB);
+      
+      // Mettre à jour l'interface
+      $("#neon-preview").css("background-color", `rgb(${window.selectedNeonRGB.join(',')})`);
+      
+      // Mettre à jour les sliders
+      $("#neon-r-slider").val(window.selectedNeonRGB[0]);
+      $("#neon-g-slider").val(window.selectedNeonRGB[1]);
+      $("#neon-b-slider").val(window.selectedNeonRGB[2]);
+      
+      // Mettre à jour les valeurs affichées
+      $("#neon-r-value").text(window.selectedNeonRGB[0]);
+      $("#neon-g-value").text(window.selectedNeonRGB[1]);
+      $("#neon-b-value").text(window.selectedNeonRGB[2]);
+      
+      // Activer les néons si pas déjà actifs
+      if (!$("#neon-main-toggle").hasClass("active")) {
+          $("#neon-main-toggle").addClass("active");
+          applyModification("neons", 1);
+      }
+      
+      // Notification
+      const colorName = $(this).find("span").text();
+      showNotification(`Couleur de néon: ${colorName}`);
+  });
+  
+  // Mise à jour en direct des sliders RGB
+  $("#neon-r-slider, #neon-g-slider, #neon-b-slider").on("input", function() {
+      const r = parseInt($("#neon-r-slider").val());
+      const g = parseInt($("#neon-g-slider").val());
+      const b = parseInt($("#neon-b-slider").val());
+      
+      // Mettre à jour les valeurs et l'aperçu
+      $("#neon-r-value").text(r);
+      $("#neon-g-value").text(g);
+      $("#neon-b-value").text(b);
+      $("#neon-preview").css("background-color", `rgb(${r},${g},${b})`);
+      
+      // Stocker les valeurs actuelles
+      window.selectedNeonRGB = [r, g, b];
+      
+      // Appliquer la couleur après un petit délai
+      clearTimeout(window.neonColorTimeout);
+      window.neonColorTimeout = setTimeout(() => {
+          applyModification("neonColor", null, [r, g, b]);
+          
+          // Activer les néons si nécessaire
+          if (!$("#neon-main-toggle").hasClass("active")) {
+              $("#neon-main-toggle").addClass("active");
+              applyModification("neons", 1);
+          }
+      }, 300);
+  });
+
+  // Appliquer la couleur personnalisée
+  $("#apply-neon-custom").on("click", function() {
+      // Appliquer la couleur
+      applyModification("neonColor", null, window.selectedNeonRGB);
+      
+      // Désélectionner les couleurs prédéfinies et réinitialiser la sélection active
+      $(".neon-color").removeClass("active selected");
+      
+      // Trouver si une couleur prédéfinie correspond
+      $(`.neon-color`).each(function() {
+          const rgb = $(this).data('rgb').split(',');
+          if (parseInt(rgb[0]) === window.selectedNeonRGB[0] && 
+              parseInt(rgb[1]) === window.selectedNeonRGB[1] && 
+              parseInt(rgb[2]) === window.selectedNeonRGB[2]) {
+              $(this).addClass('active');
+          }
+      });
+      
+      // Activer les néons si pas déjà actifs
+      if (!$("#neon-main-toggle").hasClass("active")) {
+          $("#neon-main-toggle").addClass("active");
+          applyModification("neons", 1);
+      }
+      
+      // Notification
+      showNotification(`Couleur de néon RGB(${window.selectedNeonRGB.join(', ')}) appliquée`);
+  });
+}
+
+// Fonction pour afficher une notification
+function showNotification(message) {
+  // Supprimer les anciennes notifications
+  $(".notification").remove();
+  
+  // Créer la nouvelle notification
+  const notification = $(`<div class="notification">${message}</div>`);
+  $("body").append(notification);
+  
+  // Animation d'entrée
+  notification.css({
+      bottom: "-50px",
+      opacity: 0
+  }).animate({
+      bottom: "20px",
+      opacity: 1
+  }, 300);
+  
+  // Animation de sortie après 2 secondes
+  setTimeout(() => {
+      notification.animate({
+          bottom: "-50px",
+          opacity: 0
+      }, 300, function() {
+          $(this).remove();
+      });
+  }, 2000);
+}
+
+// Fonction pour appliquer une modification au véhicule
+function applyModification(category, level, extraData) {
+  console.log(`Applying modification: ${category}, Level: ${level}, Extra: ${extraData}`);
+  
+  // Envoyer la modification au jeu
+  $.post(
+      "https://custom/applyModification",
+      JSON.stringify({
+          category: category,
+          level: level,
+          color: extraData,
+          extraId: extraData
+      }),
+      function(response) {
+          if (response && response.success === false) {
+              console.error(`Erreur lors de l'application de la modification: ${category}`, response.error);
+          }
+      }
+  ).fail(function(error) {
+      console.error("Erreur de requête:", error);
+  });
+}
+
+
+
+// Gestionnaire d'événements pour recevoir les messages du serveur
+
 
 // Mise à jour du style CSS
 const newCSS = `
@@ -2669,21 +2562,7 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
   }
   
 
-  // Fonction pour afficher une notification
-  function showNotification(message) {
-    const notification = $(`<div class="notification">${message}</div>`);
-    $("body").append(notification);
-    
-    // Animation
-    notification.animate({ bottom: "20px", opacity: 1 }, 300);
-    
-    // Disparition après 3 secondes
-    setTimeout(() => {
-      notification.animate({ bottom: "-50px", opacity: 0 }, 300, function() {
-        $(this).remove();
-      });
-    }, 3000);
-  }
+
   
   // Conversion RGB vers Hex
   function rgbToHex(r, g, b) {
@@ -3368,46 +3247,6 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
     $(`#${category}-slider`).css("left", 45 + position);
   }
   
-  // Fonction pour appliquer une modification au véhicule
-  function applyModification(category, level, extraData) {
-    // Logging pour déboguer
-    console.log(`Applying modification: ${category}, Level: ${level}, Extra: ${extraData}`);
-    
-    // Traitement spécial pour les couleurs
-    if (category === "primaryColor" || category === "secondaryColor" || category === "pearlColor") {
-      // S'assurer que level est bien un nombre
-      level = parseInt(level);
-      if (isNaN(level)) {
-        console.error(`Invalid color ID for ${category}: ${level}`);
-        return;
-      }
-      
-      // Limiter l'ID de couleur aux valeurs acceptables par GTA (généralement 0-159)
-      if (level < 0 || level > 159) {
-        console.warn(`Color ID out of range for ${category}: ${level}, limiting to valid range`);
-        level = Math.max(0, Math.min(159, level));
-      }
-    }
-    
-    // Envoyer la modification au jeu
-    $.post(
-      "https://custom/applyModification",
-      JSON.stringify({
-        category: category,
-        level: level,
-        color: extraData,
-        extraId: extraData,
-      }),
-      function(response) {
-        // Vérifier si la réponse contient des informations sur le succès/échec
-        if (response && response.success === false) {
-          console.error(`Failed to apply modification: ${category}`, response.error);
-        }
-      }
-    ).fail(function(error) {
-      console.error("Error in applyModification request:", error);
-    });
-  }
   
   // Boutons de rotation du véhicule
   $("#rotate-left").click(() => {
@@ -3600,9 +3439,9 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
     );
   });
   
-  window.addEventListener("message", function (event) {
+  window.addEventListener("message", function(event) {
     const data = event.data;
-
+  
     if (data.action === "open") {
         // Réinitialiser les données avec celles reçues
         if (data.performanceCategories) {
@@ -3623,12 +3462,6 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
         if (data.windowTints) {
             windowTints = data.windowTints;
         }
-        
-        // IMPORTANT: Ne pas écraser les définitions de couleurs
-        // if (data.vehicleColors) {
-        //     vehicleColors = data.vehicleColors;
-        // }
-        
         if (data.wheelSmokeColors) {
             wheelSmokeColors = data.wheelSmokeColors;
         }
@@ -3651,7 +3484,7 @@ $('head').append(`<style>${newCSS}</style>`); // À ajouter dans une fonction d'
     } else if (data.action === "updatePrice") {
         $("#price").text("$" + data.price);
     }
-});
+  });
 
 
 
