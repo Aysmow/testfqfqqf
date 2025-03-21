@@ -466,6 +466,8 @@ function DeleteCustomCam()
 end
 
 -- Fonctions UI
+-- Dans votre fichier client.lua, modifiez la fonction OpenCustomUI pour inclure une liste complète de couleurs
+
 function OpenCustomUI()
     -- Ouvre l'UI NUI
     SetNuiFocus(true, true)
@@ -501,7 +503,6 @@ function OpenCustomUI()
         
         -- Récupérer la couleur des xenons
         xenonColor = GetXenonColor(currentVehicle),
-
         
         -- Couleurs et teintes
         paintType = GetVehicleModColor_1(currentVehicle),
@@ -549,6 +550,7 @@ function OpenCustomUI()
         tint.active = (tint.id == currentTint)
     end
     
+    -- IMPORTANT: N'envoyez PAS la liste de vehicleColors qui sera écrasée dans ui.js
     -- Envoyer les données au frontend
     SendNUIMessage({
         action = "open",
@@ -558,7 +560,7 @@ function OpenCustomUI()
         colorCategories = colorCategories,
         wheelCategories = wheelCategories,
         windowTints = windowTints,
-        vehicleColors = vehicleColors,
+        -- vehicleColors = vehicleColors, -- NE PAS ENVOYER cela pour éviter d'écraser les couleurs
         wheelSmokeColors = wheelSmokeColors,
         vehicleData = vehicleData
     })
